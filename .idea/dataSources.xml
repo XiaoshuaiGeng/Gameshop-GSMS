@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="DigitalOcean MariaDB" uuid="a5c6d93e-d189-429b-bd02-bde3e6e860f2">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <remarks>GameStop DB</remarks>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://159.203.59.83:3306/gamestop</jdbc-url>
+    </data-source>
+  </component>
+</project>
