@@ -37,5 +37,7 @@ class Game:
     def add_genre(self, tag: str):
         self.genre.append(tag)
 
-    
+from DBController import SQLExecutor
+
+cursor = SQLExecutor()
     
