@@ -50,7 +50,7 @@ class SQLExecutor:
         finally:
             connection.close()
 
-    def select_game_by_id(self, id:str) -> tuple:
+    def select_game_by_id(self, id: str) -> tuple:
         """
         :param id: the id of the selected name
         :return: a tuple that contains all info of the selected game
@@ -64,6 +64,25 @@ class SQLExecutor:
                 cursor.execute(sql, id)
 
                 result = cursor.fetchone()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except:
+            print("Unknown Connection Error")
+        finally:
+            return result
+            connection.close()
+
+    def select_game_by_name(self, name) -> tuple:
+
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM Game WHERE game_name LIKE '%%s%'"
+                cursor.execute(sql, name)
+
+                result = cursor.fetchall()
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
