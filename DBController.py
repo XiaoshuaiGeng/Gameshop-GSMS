@@ -1,6 +1,6 @@
 from datetime import date
-
 import pymysql
+from pymysql.cursors import DictCursor
 
 
 class SQLExecutor:
@@ -141,7 +141,7 @@ class SQLExecutor:
 
             return result if result else ('No Results Found',)
 
-    def check_customer_memberships(self, customer_id: str ) -> tuple:
+    def check_customer_memberships(self, customer_id: str) -> tuple:
         """
         :param customer_id: the customer id
         :return: a tuple with customer info with hes/her corresponding membership
@@ -166,7 +166,7 @@ class SQLExecutor:
 
             return result if result else ('No Results Found',)
 
-    def list_developer_games(self,developer_id:str) -> tuple:
+    def list_developer_games(self, developer_id: str) -> tuple:
         """
         List all games that published by a specific developer
         :param developer_id: The developer id
@@ -239,7 +239,7 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
-    def list_game_by_price(self,low:str,high:str) -> tuple:
+    def list_game_by_price(self, low: str, high: str) -> tuple:
         """
         List all games within a certain price range
         :param low: the lower bound of the price range
@@ -265,25 +265,133 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
-    def list_game_by_date(self,start_date:str, end_date:str) -> tuple:
+    def list_game_by_date(self, start_date: str, end_date: str) -> tuple:
         """
-        List all games within a date range
+        List all games within a date range(The store has the game in store)
         :param start_date: The start date of the date boundary
         :param end_date: The end date of the date boundary
         :return: a tuple contains a list of games within a date range
         """
 
         try:
-            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            connection = pymysql.connect(host=self.host, user=self.username, password=self.password,
+                                         database=self.database)
             with connection.cursor() as cursor:
                 sql = "select DISTINCT game_name, release_date, genre, platform, price \
                         from Game,Store, Has_Games \
                         where Store.store_id = Has_Games.store_id \
                         and Game.game_id = Has_Games.game_id \
                         and release_date between %s and %s"
-                start = date.fromisoformat(start_date)
-                end = date.fromisoformat(end_date)
-                cursor.execute(sql, [start_date,end_date])
+
+                cursor.execute(sql, (start_date, end_date))
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
+
+    def count_published_games_by_location(self, location: str) -> tuple:
+        """
+        num of games that published developer which located in the specific area
+        :param location: a str contains location info
+        :return: num of developers in the specific Area
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select count(Game.game_id) as 'Number of Games' \
+                        from Game, Published_Games, Developer \
+                        where Developer.developer_id = Published_Games.developer_id \
+                        and Game.game_id = Published_Games.game_id \
+                        and address LIKE %s"
+                location = "'%" + location + "%'"
+                cursor.execute(sql, location)
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
+
+    def num_of_copies(self, store_id: str) -> tuple:
+        """
+        Show how many game copies that a store has
+        :param store_id: the given store id
+        :return: a tuple showing the total num of game copies of a store
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select Store.store_id,store_name,SUM(num_of_copies) as 'Num of Copies' \
+                        from Store, Has_Games,Game \
+                        where Store.store_id = Has_Games.store_id \
+                        and Game.game_id = Has_Games.game_id \
+                        and Store.store_id = %s \
+                        GROUP BY Has_Games.store_id"
+                cursor.execute(sql, store_id)
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
+
+    def num_of_games(self, store_id: str) -> tuple:
+        """
+        List num of games that a store has
+        :param store_id:
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select Store.store_id, COUNT(Has_Games.game_id) as 'Num of Games' \
+                        from Store, Has_Games, Game \
+                        where Store.store_id = Has_Games.store_id \
+                        and Game.game_id = Has_Games.game_id \
+                        and Store.store_id = %s \
+                        GROUP BY Has_Games.store_id"
+                cursor.execute(sql, store_id)
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+
+            connection.close()
+            return result if result else ('No Results Found',)
+
+    def list_customer_history(self, customer_id, start, end):
+        """
+
+        :param customer_id: The given customer id
+        :param start:   The start date of the date range
+        :param end:     The end date of the date range
+        :return:        a tuple contains the list of customer purchase history
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select Store.store_id, store_name, fname,lname, purchaseDate \
+                        from Store, Bought_Games, Customer, Game \
+                        where Store.store_id = Bought_Games.store_id \
+                        and Game.game_id = Bought_Games.game_id \
+                        and (purchaseDate between %s and %s)\
+                        and Customer.customer_id = %s"
+
+                cursor.execute(sql, (customer_id, start, end))
                 result = cursor.fetchall()
 
         except pymysql.err.ProgrammingError:
@@ -295,5 +403,6 @@ class SQLExecutor:
             return result if result else ('No Results Found',)
 
 
+
 test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
-print(test.list_game_by_date("2000-01-01","2020-01-01"))
+print(test.list_game_by_date("2000-01-01", "2020-01-01"))
