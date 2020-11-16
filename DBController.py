@@ -626,4 +626,3 @@ class SQLExecutor:
             connection.close()
 
 test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
-print(test.list_game_by_date("2000-01-01", "2020-01-01"))
