@@ -941,7 +941,6 @@
     <column id="274" parent="238" name="availability">
       <Position>7</Position>
       <DataType>varchar(20)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <key id="275" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>

@@ -403,6 +403,7 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
+
     def getTabledata(self) -> tuple:
         """
         Show how many game copies that a store has
@@ -416,6 +417,30 @@ class SQLExecutor:
                 cursor.execute(sql)
                 result = cursor.fetchall()
 
+
+    def add_game(self, game_name, release_date=date.today(), genre="", platform="", price="", availability=""):
+        """
+        Insert a game record into database
+        :param game_name:       The game name
+        :param release_date:    The release date of the name, use current date by default
+        :param genre:           The genre of the game
+        :param platform:        The platform that the game will be on: XBOX/PC/PlayStation
+        :param price:           The price of the game
+        :param availability:    The availability of the game
+        :return:                print "INSERT SUCCESSFULLY" if insert succeed
+        """
+
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Game (game_name, release_date, genre, platform, price,availability) \
+                        VALUES (%s,%s,%s,%s,%s,%s)"
+
+                cursor.execute(sql, (game_name ,release_date, genre, platform, price,availability))
+
+                connection.commit()
+                print("INSERT SUCCESSFULLY")
+                
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
         except ConnectionError:
@@ -423,6 +448,173 @@ class SQLExecutor:
         finally:
             connection.close()
             return result if result else ('No Results Found',)
+
+    def delete_game(self,game_id):
+        """
+        Delete a record from database by id
+        :param game_id: the game_id of the game that need to be deleted
+        :return: print "DELETE SUCCESSFULLY" if succeed
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "DELETE from Game WHERE game_id = %s"
+
+                cursor.execute(sql, game_id)
+
+                connection.commit()
+                print("DELETE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def update_game(self,game_id,game_name=None, release_date=None,
+                    genre=None,platform=None,price=None,availability=None):
+        """
+        Update a game record according to its game id
+        :param game_id: The game id
+        :param game_name: The game name
+        :param release_date: The game release date
+        :param genre: The genre of the game
+        :param platform: Which platform the game will be on
+        :param price:   Price of the game
+        :param availability: Currently null
+        :return: Print "Update Successfully" to the terminal if success
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "UPDATE Game \
+                      SET game_name = IFNULL(%s,game_name), \
+                      release_date =  IFNULL(%s,release_date), \
+                      genre = IFNULL(%s,genre), \
+                      platform = IFNULL(%s,platform), \
+                      price = IFNULL(%s, price) \
+                      availability = IFNULL(%s,availability) \
+                      WHERE game_id = %s"
+                cursor.execute(sql, (game_name, release_date, genre, platform, price,availability, game_id))
+
+                connection.commit()
+                print("Update SUCCESSFULLY")
+        except pymysql.err.ProgrammingError as e:
+            print(f'A DB error caught\n {e}')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def add_customer(self, fname:str, lname:str, address:str):
+        """
+        Add a customer record into database
+        :param fname: Firstname
+        :param lname: Lastname
+        :param address: Customer address
+        :return: print "INSERT SUCCESSFULLY" to the terminal
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Customer (fname, lname,address) \
+                        VALUES (%s,%s,%s)"
+                cursor.execute(sql, (fname, lname, address))
+                connection.commit()
+                print("INSERT SUCCESSFULLY")
+        except pymysql.err.ProgrammingError as e:
+            print(f'A DB error caught\n {e}')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def delete_customer(self,customer_id):
+        """
+        Delete a customer record from database by id
+        :param customer_id: the game_id of the customer that need to be deleted
+        :return: print "DELETE SUCCESSFULLY" if succeed
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "DELETE from Customer WHERE customer_id = %s"
+                cursor.execute(sql, customer_id)
+                connection.commit()
+                print("DELETE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def update_customer(self,customer_id,fname=None, lname=None, address=None):
+        """
+
+        :param customer_id: customer_id indicate the record that need to be modified
+        :param fname: firstname of customer
+        :param lname: lastname
+        :param address: customer address
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "UPDATE Customer \
+                      SET fname = IFNULL(%s,fname), \
+                      lname = IFNULL(%s,lname), \
+                      address = IFNULL(%s,address) \
+                      WHERE customer_id = %s"
+                cursor.execute(sql, (fname,lname,address,customer_id))
+                connection.commit()
+                print("UPDATE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def add_developer(self,developer_name,address):
+        """
+        Add a developer
+        :param developer_name: The developer name
+        :param address: The developer address
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Developer (developer_name, address) \
+                        VALUES (%s,%s)"
+                cursor.execute(sql, (developer_name,address))
+                connection.commit()
+                print("INSERT SUCCESSFULLY")
+        except pymysql.err.ProgrammingError as e:
+            print(f'A DB error caught\n {e}')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def update_developer(self,developer_id,developer_name=None, address=None):
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "UPDATE Developer \
+                      SET developer_name = IFNULL(%s,developer_name), \
+                      address = IFNULL(%s,address) \
+                      WHERE developer_id = %s"
+                cursor.execute(sql, (developer_name,address,developer_id))
+                connection.commit()
+                print("UPDATE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
 
 
 
