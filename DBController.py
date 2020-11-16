@@ -581,6 +581,13 @@ class SQLExecutor:
             connection.close()
 
     def update_developer(self,developer_id,developer_name=None, address=None):
+        """
+
+        :param developer_id: the developer id of the record that need to be updated
+        :param developer_name: the developer name
+        :param address: the developer address
+        :return:
+        """
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
@@ -588,7 +595,7 @@ class SQLExecutor:
                       SET developer_name = IFNULL(%s,developer_name), \
                       address = IFNULL(%s,address) \
                       WHERE developer_id = %s"
-                cursor.execute(sql, (developer_name,address,developer_id))
+                cursor.execute(sql, (developer_name, address, developer_id))
                 connection.commit()
                 print("UPDATE SUCCESSFULLY")
         except pymysql.err.ProgrammingError:
@@ -598,6 +605,25 @@ class SQLExecutor:
         finally:
             connection.close()
 
+    def delete_developer(self, developer_id):
+        """
+
+        :param developer_id: the developer id of the record that need to be deleted
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "DELETE from Developer WHERE developer_id = %s"
+                cursor.execute(sql, developer_id)
+                connection.commit()
+                print("DELETE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
 
 test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
 print(test.list_game_by_date("2000-01-01", "2020-01-01"))
