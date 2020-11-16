@@ -426,6 +426,12 @@ class SQLExecutor:
 
                 connection.commit()
                 print("INSERT SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
 
     def getTabledata(self) -> tuple:
         """
@@ -470,7 +476,6 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
 
 
     def update_game(self,game_id,game_name=None, release_date=None,
