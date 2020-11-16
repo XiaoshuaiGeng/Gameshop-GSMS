@@ -63,7 +63,7 @@ class SQLExecutor:
                 sql = "SELECT * FROM Game WHERE game_id = %s"
                 cursor.execute(sql, id)
 
-                result = cursor.fetchone()
+                result = cursor.fetchall()
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
@@ -83,7 +83,8 @@ class SQLExecutor:
 
                 sql = "SELECT * FROM Game WHERE game_name LIKE %s"
                 # ('%'+name+'%',) is semantically equal to "%name%"
-                game_name = "'%" + name + "%'"
+                game_name = "%" + name + "%"
+                # game_name = name
                 print(game_name)
                 cursor.execute(sql, game_name)
                 result = cursor.fetchall()
@@ -402,6 +403,7 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
+
     def add_game(self, game_name, release_date=date.today(), genre="", platform="", price="", availability=""):
         """
         Insert a game record into database
@@ -424,12 +426,28 @@ class SQLExecutor:
 
                 connection.commit()
                 print("INSERT SUCCESSFULLY")
+
+    def getTabledata(self) -> tuple:
+        """
+        Show how many game copies that a store has
+        :param store_id: the given store id
+        :return: a tuple showing the total num of game copies of a store
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select * from Game"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+
+
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
         except ConnectionError:
             print("Unknown Connection Error")
         finally:
             connection.close()
+
 
     def delete_game(self,game_id):
         """
@@ -452,6 +470,8 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
+            return result if result else ('No Results Found',)
+
 
     def update_game(self,game_id,game_name=None, release_date=None,
                     genre=None,platform=None,price=None,availability=None):
