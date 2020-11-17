@@ -358,7 +358,7 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select Store.store_id, COUNT(Has_Games.game_id) as 'Num of Games' \
+                sql = "select Store.store_id,store_name, COUNT(Has_Games.game_id) as 'Num of Games' \
                         from Store, Has_Games, Game \
                         where Store.store_id = Has_Games.store_id \
                         and Game.game_id = Has_Games.game_id \
@@ -448,7 +448,7 @@ class SQLExecutor:
                 cursor.execute(sql, (game_name, release_date, genre, platform, price, availability))
                 connection.commit()
                 print("INSERT SUCCESSFULLY")
-                
+
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
         except ConnectionError:
@@ -480,8 +480,9 @@ class SQLExecutor:
         finally:
             connection.close()
 
+
     def update_game(self,game_id,game_name=None, release_date=None,
-                    genre=None,platform=None,price=None, availability=None):
+                    genre=None,platform=None,price=None,availability=None):
         """
         Update a game record according to its game id
         :param game_id: The game id
@@ -514,6 +515,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
+
 
     def add_customer(self, fname:str, lname:str, address:str):
         """
@@ -608,6 +610,13 @@ class SQLExecutor:
             connection.close()
 
     def update_developer(self,developer_id,developer_name=None, address=None):
+        """
+
+        :param developer_id: the developer id of the record that need to be updated
+        :param developer_name: the developer name
+        :param address: the developer address
+        :return:
+        """
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
@@ -615,7 +624,7 @@ class SQLExecutor:
                       SET developer_name = IFNULL(%s,developer_name), \
                       address = IFNULL(%s,address) \
                       WHERE developer_id = %s"
-                cursor.execute(sql, (developer_name,address,developer_id))
+                cursor.execute(sql, (developer_name, address, developer_id))
                 connection.commit()
                 print("UPDATE SUCCESSFULLY")
         except pymysql.err.ProgrammingError:
@@ -625,7 +634,24 @@ class SQLExecutor:
         finally:
             connection.close()
 
+    def delete_developer(self, developer_id):
+        """
 
+        :param developer_id: the developer id of the record that need to be deleted
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "DELETE from Developer WHERE developer_id = %s"
+                cursor.execute(sql, developer_id)
+                connection.commit()
+                print("DELETE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
 
 test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
-print(test.list_game_by_date("2000-01-01", "2020-01-01"))
