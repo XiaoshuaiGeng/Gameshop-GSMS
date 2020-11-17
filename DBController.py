@@ -356,7 +356,7 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select Store.store_id, COUNT(Has_Games.game_id) as 'Num of Games' \
+                sql = "select Store.store_id,store_name, COUNT(Has_Games.game_id) as 'Num of Games' \
                         from Store, Has_Games, Game \
                         where Store.store_id = Has_Games.store_id \
                         and Game.game_id = Has_Games.game_id \
@@ -512,6 +512,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
+
 
     def add_customer(self, fname:str, lname:str, address:str):
         """
