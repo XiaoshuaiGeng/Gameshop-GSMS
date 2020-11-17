@@ -67,6 +67,8 @@ class SQLExecutor:
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
+        except:
+            print("error caught by id")
         finally:
             return result
             connection.close()
@@ -224,7 +226,7 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select fname,lname,membership_type \
+                sql = "select C.customer_id,fname,lname,membership_type \
                         from Customer_Membership as R,Customer as C,Membership as M \
                         where R.membership_id = M.membership_id \
                         and R.customer_id = C.customer_id \
@@ -356,7 +358,7 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select Store.store_id, COUNT(Has_Games.game_id) as 'Num of Games' \
+                sql = "select Store.store_id,store_name, COUNT(Has_Games.game_id) as 'Num of Games' \
                         from Store, Has_Games, Game \
                         where Store.store_id = Has_Games.store_id \
                         and Game.game_id = Has_Games.game_id \
@@ -404,6 +406,27 @@ class SQLExecutor:
             return result if result else ('No Results Found',)
 
 
+    def getTabledata(self) -> tuple:
+        """
+        Show how many game copies that a store has
+        :param store_id: the given store id
+        :return: a tuple showing the total num of game copies of a store
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select * from Game"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
+
+
     def add_game(self, game_name, release_date=date.today(), genre="", platform="", price="", availability=""):
         """
         Insert a game record into database
@@ -422,38 +445,18 @@ class SQLExecutor:
                 sql = "INSERT INTO Game (game_name, release_date, genre, platform, price,availability) \
                         VALUES (%s,%s,%s,%s,%s,%s)"
 
-                cursor.execute(sql, (game_name ,release_date, genre, platform, price,availability))
-
+                cursor.execute(sql, (game_name, release_date, genre, platform, price, availability))
                 connection.commit()
                 print("INSERT SUCCESSFULLY")
-        except pymysql.err.ProgrammingError:
-            print('A DB error caught')
-        except ConnectionError:
-            print("Unknown Connection Error")
-        finally:
-            connection.close()
-
-    def getTabledata(self) -> tuple:
-        """
-        Show how many game copies that a store has
-        :param store_id: the given store id
-        :return: a tuple showing the total num of game copies of a store
-        """
-        try:
-            connection = pymysql.connect(self.host, self.username, self.password, self.database)
-            with connection.cursor() as cursor:
-                sql = "select * from Game"
-                cursor.execute(sql)
-                result = cursor.fetchall()
-
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
         except ConnectionError:
             print("Unknown Connection Error")
+        except:
+            print("error caused by unknown error")
         finally:
             connection.close()
-
 
     def delete_game(self,game_id):
         """
@@ -499,10 +502,10 @@ class SQLExecutor:
                       release_date =  IFNULL(%s,release_date), \
                       genre = IFNULL(%s,genre), \
                       platform = IFNULL(%s,platform), \
-                      price = IFNULL(%s, price) \
+                      price = IFNULL(%s, price), \
                       availability = IFNULL(%s,availability) \
                       WHERE game_id = %s"
-                cursor.execute(sql, (game_name, release_date, genre, platform, price,availability, game_id))
+                cursor.execute(sql, (game_name, release_date, genre, platform, price, availability, game_id))
 
                 connection.commit()
                 print("Update SUCCESSFULLY")
@@ -512,6 +515,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
+
 
     def add_customer(self, fname:str, lname:str, address:str):
         """
@@ -582,6 +586,24 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
+
+    def list_customer(self):
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM Customer"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else "No Results Found"
+
 
     def add_developer(self,developer_name,address):
         """
