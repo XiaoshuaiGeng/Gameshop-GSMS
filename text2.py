@@ -17,7 +17,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi('a.ui', self)
 
-
+        #GameTable
         self.button = self.findChild(QtWidgets.QPushButton, 'search1') # Find the button
         self.button.clicked.connect(self.searchGame)
 
@@ -40,13 +40,52 @@ class Ui(QtWidgets.QMainWindow):
         self.edit = self.findChild(QtWidgets.QPushButton, 'Edit1')
         self.edit.clicked.connect(self.EditGameWin)
 
+        #CustomerTable
+        self.CostomerTable = self.findChild(QtWidgets.QTableWidget, 'tableGame2')
+        self.CostomerTable.viewport().installEventFilter(self)
+
+        self.SearchCustomer = self.findChild(QtWidgets.QPushButton, 'search2')  # Find the button
+        self.SearchCustomer.clicked.connect(self.SearchCus)
+
+        self.refreshCustomer = self.findChild(QtWidgets.QPushButton, 'RefreshBtn2')  # Find the button
+        self.refreshCustomer.clicked.connect(self.CustomerTableList)
+
+        self.addCos = self.findChild(QtWidgets.QPushButton, 'add2')  # Find the button
+        self.addCos.clicked.connect(self.addCustomer)
+
+        self.search2 = self.findChild(QtWidgets.QLineEdit, 'searchBox2')
+
+        #Set
         self.pss.setColumnCount(6)
+        self.CostomerTable.setColumnCount(6)
 
         self.FirstTimeList()
+        self.CustomerTableList()
 
         #self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
 
         self.show()
+
+    def addCustomer(self):
+        self.adCos = adCustomer()
+
+    def SearchCus(self):
+        self.CostomerTable.setRowCount(0)
+        id = self.search2.text()
+        if id.isnumeric():
+            print(tabledata.check_customer_memberships(id))
+            for row_number, row_data in enumerate((tabledata.check_customer_memberships(id),)):
+                self.CostomerTable.insertRow(row_number)
+                print(row_data, row_number)
+                for column_number, data in enumerate(row_data):
+                    self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+        # else:
+        #     for row_number, row_data in enumerate((tabledata.select_game_by_name(id))):
+        #         self.pss.insertRow(row_number)
+        #         print(row_data, row_number)
+        #         for column_number, data in enumerate(row_data):
+        #             self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
 
     def EditGameWin(self):
         self.editGame = EditGame()
@@ -62,12 +101,12 @@ class Ui(QtWidgets.QMainWindow):
         self.FirstTimeList()
 
     def CustomerTableList(self):
-        self.pss.setRowCount(0)
+        self.CostomerTable.setRowCount(0)
         for row_number, row_data in enumerate(tabledata.list_all_customer_memberships()):
-            self.pss.insertRow(row_number)
+            self.CostomerTable.insertRow(row_number)
             print(row_data, row_number)
             for column_number, data in enumerate(row_data):
-                self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+                self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
 
     def FirstTimeList(self):            #L:List Game Table
@@ -193,6 +232,30 @@ class EditGame(QtWidgets.QWidget):
     def updateToDB(self):
         tabledata.update_game(game_id=self.gameId.text(), game_name=self.gameName.text(), release_date=self.rDate.text(),genre=self.genre.text(),platform=self.platForm.text(),price=self.price.text(), availability=self.aval.text())
         self.close()
+
+    def closeWin(self):
+        self.close()
+
+class adCustomer(QtWidgets.QWidget):
+    def __init__(self):
+        super(adCustomer, self).__init__()
+
+        uic.loadUi('addCustomer.ui', self)
+
+        self.show()
+
+        self.address = self.findChild(QtWidgets.QLineEdit,'Address')
+        self.firstName = self.findChild(QtWidgets.QLineEdit, 'cFirstName')
+        self.lastName = self.findChild(QtWidgets.QLineEdit, 'cLastName')
+
+        self.add = self.findChild(QtWidgets.QPushButton, 'add_3')
+        self.add.clicked.connect(self.addData)
+
+        self.cancel = self.findChild(QtWidgets.QPushButton, 'cancel_3')
+        self.add.clicked.connect(self.closeWin)
+
+    def addData(self):
+        tabledata.add_customer(fname=self.firstName.text(), lname= self.lastName.text(), address= self.address.text())
 
     def closeWin(self):
         self.close()
