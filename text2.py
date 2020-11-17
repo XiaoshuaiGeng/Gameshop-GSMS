@@ -1,7 +1,7 @@
-from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from DBController import SQLExecutor
-import sqlite3
 import sys
+
+from PyQt5 import QtWidgets, uic, QtCore
+
 import DBController
 
 tabledata = DBController.SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456",
@@ -9,9 +9,8 @@ tabledata = DBController.SQLExecutor(host="159.203.59.83", username="gamestop", 
 start = True
 rowid = 0
 
+
 class Ui(QtWidgets.QMainWindow):
-
-
 
     def __init__(self):
         super(Ui, self).__init__()
@@ -259,8 +258,7 @@ class adCustomer(QtWidgets.QWidget):
 
     def closeWin(self):
         self.close()
-        
-test = SQLExecutor(host="159.203.59.83",username="gamestop",password="Sn123456",database="gamestop")
+
 
 app = QtWidgets.QApplication(sys.argv)
 window = Ui()

@@ -1,6 +1,6 @@
 from datetime import date
+
 import pymysql
-from pymysql.cursors import DictCursor
 
 
 class SQLExecutor:
@@ -143,6 +143,57 @@ class SQLExecutor:
             connection.close()
 
             return result if result else ('No Results Found',)
+
+    def add_customer_membership(self,customer_id, membership_id):
+        """
+        Add a memebership to given customer
+        :param customer_id: the customer id
+        :param membership_id: the membership id give to the customer
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Customer_Membership ( customer_id,membership_id) \
+                        VALUES (%s,%s)"
+
+                cursor.execute(sql, (customer_id,membership_id))
+                connection.commit()
+                print("INSERT SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        except:
+            print("error caused by unknown error")
+        finally:
+            connection.close()
+
+    def update_customer_membership(self, customer_id, membership_id=None):
+        """
+        Update customer's membership type
+        :param customer_id: The customers customer id
+        :param membership_id: The membership id to update
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "Update Customer_Membership \
+                        SET membership_id = IFNULL(%s , membership_id)  \
+                        WHERE customer_id = %s"
+
+                cursor.execute(sql, (membership_id, customer_id))
+                connection.commit()
+                print("INSERT SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        except:
+            print("error caused by unknown error")
+        finally:
+            connection.close()
 
     def check_customer_memberships(self, customer_id: str) -> tuple:
         """
