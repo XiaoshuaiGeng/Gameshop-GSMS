@@ -587,6 +587,24 @@ class SQLExecutor:
         finally:
             connection.close()
 
+    def list_customer(self):
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM Customer"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else "No Results Found"
+
+
     def add_developer(self,developer_name,address):
         """
         Add a developer
