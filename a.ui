@@ -170,24 +170,24 @@
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_19">
                      <item>
-                      <widget class="QLineEdit" name="searchBox1_4"/>
+                      <widget class="QLineEdit" name="searchBox2"/>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="search1_4">
+                      <widget class="QPushButton" name="search2">
                        <property name="text">
                         <string>Search</string>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="Edit1_4">
+                      <widget class="QPushButton" name="Edit2">
                        <property name="text">
                         <string>Edit</string>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="RefreshBtn_4">
+                      <widget class="QPushButton" name="RefreshBtn2">
                        <property name="text">
                         <string>Refresh</string>
                        </property>
@@ -240,7 +240,7 @@
                     </layout>
                    </item>
                    <item>
-                    <widget class="QTableWidget" name="tableGame_3">
+                    <widget class="QTableWidget" name="tableGame2">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
@@ -267,14 +267,14 @@
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
                      <item>
-                      <widget class="QPushButton" name="add1_3">
+                      <widget class="QPushButton" name="add2">
                        <property name="text">
                         <string>Add</string>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="delete1_3">
+                      <widget class="QPushButton" name="delete2">
                        <property name="text">
                         <string>Delete</string>
                        </property>
