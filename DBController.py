@@ -591,7 +591,7 @@ class SQLExecutor:
         finally:
             connection.close()
 
-    def delete_customer(self,customer_id):
+    def delete_customer(self,customer_id:str):
         """
         Delete a customer record from database by id
         :param customer_id: the game_id of the customer that need to be deleted
@@ -611,7 +611,7 @@ class SQLExecutor:
         finally:
             connection.close()
 
-    def update_customer(self,customer_id,fname=None, lname=None, address=None):
+    def update_customer(self,customer_id:str,fname:str=None, lname:str=None, address:str=None):
         """
 
         :param customer_id: customer_id indicate the record that need to be modified
@@ -656,7 +656,7 @@ class SQLExecutor:
             return result if result else "No Results Found"
 
 
-    def add_developer(self,developer_name,address):
+    def add_developer(self,developer_name:str,address:str):
         """
         Add a developer
         :param developer_name: The developer name
@@ -678,7 +678,7 @@ class SQLExecutor:
         finally:
             connection.close()
 
-    def update_developer(self,developer_id,developer_name=None, address=None):
+    def update_developer(self,developer_id:str,developer_name:str=None, address:str=None):
         """
 
         :param developer_id: the developer id of the record that need to be updated
@@ -703,9 +703,9 @@ class SQLExecutor:
         finally:
             connection.close()
 
-    def delete_developer(self, developer_id):
+    def delete_developer(self, developer_id:str):
         """
-
+        delete a record from Developer table
         :param developer_id: the developer id of the record that need to be deleted
         :return:
         """
@@ -714,6 +714,84 @@ class SQLExecutor:
             with connection.cursor() as cursor:
                 sql = "DELETE from Developer WHERE developer_id = %s"
                 cursor.execute(sql, developer_id)
+                connection.commit()
+                print("DELETE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def list_store(self):
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select * from Store"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
+
+    def add_store(self, store_name:str, address:str):
+        """
+        Add a record into Store table
+        :param store_name:
+        :param address:
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Store (store_name, address) \
+                        VALUES (%s,%s)"
+                cursor.execute(sql, (store_name, address))
+                connection.commit()
+                print("INSERT SUCCESSFULLY")
+        except pymysql.err.ProgrammingError as e:
+            print(f'A DB error caught\n {e}')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def update_store(self, store_id:str, store_name:str=None, address:str=None):
+        """
+        Update a record in Store Table
+        :param store_id: the selected store id
+        :param store_name: the store name that need to be updated
+        :param address:  the store address to be updated
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "UPDATE Store \
+                      SET store_name = IFNULL(%s,store_name), \
+                      address = IFNULL(%s,address) \
+                      WHERE store_id = %s"
+                cursor.execute(sql, (store_name, address, store_id))
+                connection.commit()
+                print("UPDATE SUCCESSFULLY")
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+
+    def delete_store(self, store_id: str):
+
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "DELETE from Store WHERE store_id = %s"
+                cursor.execute(sql, store_id)
                 connection.commit()
                 print("DELETE SUCCESSFULLY")
         except pymysql.err.ProgrammingError:
