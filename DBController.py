@@ -67,6 +67,8 @@ class SQLExecutor:
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
+        except:
+            print("error caught by id")
         finally:
             return result
             connection.close()
@@ -224,7 +226,7 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select fname,lname,membership_type \
+                sql = "select C.customer_id,fname,lname,membership_type \
                         from Customer_Membership as R,Customer as C,Membership as M \
                         where R.membership_id = M.membership_id \
                         and R.customer_id = C.customer_id \
@@ -416,6 +418,13 @@ class SQLExecutor:
                 sql = "select * from Game"
                 cursor.execute(sql)
                 result = cursor.fetchall()
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
 
 
     def add_game(self, game_name, release_date=date.today(), genre="", platform="", price="", availability=""):
@@ -436,8 +445,7 @@ class SQLExecutor:
                 sql = "INSERT INTO Game (game_name, release_date, genre, platform, price,availability) \
                         VALUES (%s,%s,%s,%s,%s,%s)"
 
-                cursor.execute(sql, (game_name ,release_date, genre, platform, price,availability))
-
+                cursor.execute(sql, (game_name, release_date, genre, platform, price, availability))
                 connection.commit()
                 print("INSERT SUCCESSFULLY")
                 
@@ -445,9 +453,10 @@ class SQLExecutor:
             print('A DB error caught')
         except ConnectionError:
             print("Unknown Connection Error")
+        except:
+            print("error caused by unknown error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
 
     def delete_game(self,game_id):
         """
@@ -472,7 +481,7 @@ class SQLExecutor:
             connection.close()
 
     def update_game(self,game_id,game_name=None, release_date=None,
-                    genre=None,platform=None,price=None,availability=None):
+                    genre=None,platform=None,price=None, availability=None):
         """
         Update a game record according to its game id
         :param game_id: The game id
@@ -492,10 +501,10 @@ class SQLExecutor:
                       release_date =  IFNULL(%s,release_date), \
                       genre = IFNULL(%s,genre), \
                       platform = IFNULL(%s,platform), \
-                      price = IFNULL(%s, price) \
+                      price = IFNULL(%s, price), \
                       availability = IFNULL(%s,availability) \
                       WHERE game_id = %s"
-                cursor.execute(sql, (game_name, release_date, genre, platform, price,availability, game_id))
+                cursor.execute(sql, (game_name, release_date, genre, platform, price, availability, game_id))
 
                 connection.commit()
                 print("Update SUCCESSFULLY")
