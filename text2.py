@@ -1,6 +1,7 @@
 import sys
 
-from PyQt5 import QtWidgets, uic, QtCore
+from PyQt5 import QtWidgets, uic
+from PyQt5.QtWidgets import QAbstractItemView
 
 import DBController
 
@@ -23,7 +24,9 @@ class Ui(QtWidgets.QMainWindow):
         self.input = self.findChild(QtWidgets.QLineEdit, 'searchBox1')
 
         self.pss =self.findChild(QtWidgets.QTableWidget, 'tableGame')
-        self.pss.itemClicked.connect(lambda: self.test_click(self.pss.currentRow()))
+        # self.pss = QtWidgets.QTableWidget(self.pss)
+        self.pss.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.pss.itemClicked.connect(lambda: self.test_click(self.pss))
 
         # self.pss.viewport().installEventFilter(self)
 
@@ -35,7 +38,7 @@ class Ui(QtWidgets.QMainWindow):
         self.refreshList = self.findChild(QtWidgets.QPushButton,'RefreshBtn')
         self.refreshList.clicked.connect(self.RefreshListBtn)
 
-        self.delete = self.findChild(QtWidgets.QPushButton,'delete1')
+        self.delete = self.findChild(QtWidgets.QPushButton, 'delete1')
         self.delete.clicked.connect(self.deleteByUserid)
 
         self.edit = self.findChild(QtWidgets.QPushButton, 'Edit1')
@@ -67,8 +70,9 @@ class Ui(QtWidgets.QMainWindow):
 
         self.show()
 
-    def test_click(self:QtWidgets.QTableWidget,obj):
-        print(obj)
+    def test_click(self,obj:QtWidgets.QTableWidget):
+        print("ID: {0}".format(obj.item(obj.currentRow(), 0).text()))
+        print("test Click ", obj.currentItem().isSelected())
 
     def addCustomer(self):
         self.adCos = adCustomer()
@@ -95,14 +99,20 @@ class Ui(QtWidgets.QMainWindow):
         self.editGame = EditGame()
         self.editGame.show()
 
-
     def deleteByUserid(self):
+        """
+        Delete current selected row from db & GUI
+        :return:
+        """
+        # check if user selected item or not
+        if len(self.pss.selectedItems()):
+            print(self.pss.item(self.pss.currentRow(),0).text())
 
-        global rowid
-        print(rowid)
-        print(self.pss.item(rowid, 0).text())
-        tabledata.delete_game(game_id= self.pss.item(rowid, 0).text())
-        self.FirstTimeList()
+            # pass the id of current row item into SQL to delete item in db
+            tabledata.delete_game(self.pss.item(self.pss.currentRow(), 0).text())
+
+            #remove current row from Table Widget
+            self.pss.removeRow(self.pss.currentRow())
 
     def CustomerTableList(self):
         self.CostomerTable.setRowCount(0)
@@ -112,8 +122,9 @@ class Ui(QtWidgets.QMainWindow):
             for column_number, data in enumerate(row_data):
                 self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
+    # :List Game Table
+    def FirstTimeList(self):
 
-    def FirstTimeList(self):            #L:List Game Table
         self.pss.setRowCount(0)
         for row_number, row_data in enumerate(tabledata.getTabledata()):
             self.pss.insertRow(row_number)
@@ -149,7 +160,7 @@ class Ui(QtWidgets.QMainWindow):
 
 
     def AddGameWindow(self):
-        self.addGame = AddGameWin()
+        self.addGame = AddGameWin(self)
         self.addGame.show()
         #print(self.addGame.gameName.input.text())
 
@@ -159,33 +170,15 @@ class Ui(QtWidgets.QMainWindow):
         self.pss.setRowCount(0)
         self.ListAll(self.input.text())
 
-
-    def eventFilter(self, source, event):
-        if self.pss.selectedIndexes() is not []:
-
-            if event.type() == QtCore.QEvent.MouseButtonPress:
-                if event.button() == QtCore.Qt.LeftButton:
-                    row = self.pss.currentRow()
-                    col = self.pss.currentColumn()
-
-                    #print(self.pss.item(row, 0).text())
-                    #print(self.pss.item(row, 0).text())
-                    if(row != -1):
-                        self.returnGameTabRow(row)
-
-
-
-        return QtCore.QObject.event(source, event)
-
     def returnGameTabRow(self, row):
         global rowid
         rowid = row
         print(row)
 
 class AddGameWin(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, parent_window: QtWidgets.QWidget):
         super(AddGameWin, self).__init__()
-
+        self.parent_window = parent_window
         uic.loadUi('1.ui', self)
 
         self.show()
@@ -204,8 +197,10 @@ class AddGameWin(QtWidgets.QWidget):
         self.aval = self.findChild(QtWidgets.QLineEdit, 'aval')
 
     def addtoDB(self):
+        # print(self.gameName.text(), self.rDate.text(),self.genre.text(),self.platForm.text(),self.price.text(), self.aval.text())
         tabledata.add_game(game_name=self.gameName.text(), release_date=self.rDate.text(),genre=self.genre.text(),platform=self.platForm.text(),price=self.price.text(), availability=self.aval.text())
         self.close()
+        self.parent_window.FirstTimeList()
 
     def closeWin(self):
         self.close()

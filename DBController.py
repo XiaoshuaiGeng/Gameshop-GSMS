@@ -348,6 +348,28 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
+    # def search_game(self, keyword:str = None,start_date,end_date,start_price,end_price):
+    #     try:
+    #         connection = pymysql.connect(host=self.host, user=self.username, password=self.password,
+    #                                      database=self.database)
+    #         with connection.cursor() as cursor:
+    #             sql = "select DISTINCT game_id, game_name, release_date, genre, platform, price \
+    #                     from Game \
+    #                     where game_id = IFNULL(%s,game_id) \
+    #                     OR game_name =  IFNULL(%s,game_name)\
+    #                      release_date between %s and %s"
+    #
+    #             cursor.execute(sql, (start_date, end_date))
+    #             result = cursor.fetchall()
+    #
+    #     except pymysql.err.ProgrammingError:
+    #         print('A DB error caught')
+    #     except ConnectionError:
+    #         print("Unknown Connection Error")
+    #     finally:
+    #         connection.close()
+    #         return result if result else ('No Results Found',)
+
     def count_published_games_by_location(self, location: str) -> tuple:
         """
         num of games that published developer which located in the specific area

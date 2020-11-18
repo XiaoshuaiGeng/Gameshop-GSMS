@@ -57,7 +57,30 @@
         </widget>
        </item>
        <item>
-        <widget class="QDateEdit" name="releaseDate"/>
+        <widget class="QDateEdit" name="releaseDate">
+         <property name="showGroupSeparator" stdset="0">
+          <bool>false</bool>
+         </property>
+         <property name="currentSection">
+          <enum>QDateTimeEdit::MonthSection</enum>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+         <property name="currentSectionIndex">
+          <number>0</number>
+         </property>
+         <property name="timeSpec">
+          <enum>Qt::LocalTime</enum>
+         </property>
+         <property name="date">
+          <date>
+           <year>2000</year>
+           <month>1</month>
+           <day>13</day>
+          </date>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

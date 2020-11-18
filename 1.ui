@@ -40,7 +40,17 @@
         </widget>
        </item>
        <item>
-        <widget class="QDateEdit" name="releaseDate"/>
+        <widget class="QDateEdit" name="releaseDate">
+         <property name="currentSection">
+          <enum>QDateTimeEdit::DaySection</enum>
+         </property>
+         <property name="displayFormat">
+          <string>yyyy/MM/dd</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
