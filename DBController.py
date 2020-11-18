@@ -245,7 +245,7 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
-    def list_all_published_games(self):
+    def list_all_published_games(self) -> tuple:
         """
         list all games that published by all developer
         :return: a tuple that list all developers with all games they published

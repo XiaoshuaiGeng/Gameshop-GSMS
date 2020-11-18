@@ -22,8 +22,10 @@ class Ui(QtWidgets.QMainWindow):
 
         self.input = self.findChild(QtWidgets.QLineEdit, 'searchBox1')
 
-        self.pss = self.findChild(QtWidgets.QTableWidget, 'tableGame')
-        self.pss.viewport().installEventFilter(self)
+        self.pss =self.findChild(QtWidgets.QTableWidget, 'tableGame')
+        self.pss.itemClicked.connect(lambda: self.test_click(self.pss.currentRow()))
+
+        # self.pss.viewport().installEventFilter(self)
 
         self.checkboxgame = self.findChild(QtWidgets.QAbstractButton, 'checkBoxGame')
 
@@ -64,6 +66,9 @@ class Ui(QtWidgets.QMainWindow):
         #self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
 
         self.show()
+
+    def test_click(self:QtWidgets.QTableWidget,obj):
+        print(obj)
 
     def addCustomer(self):
         self.adCos = adCustomer()

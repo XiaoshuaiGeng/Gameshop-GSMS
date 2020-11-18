@@ -33,7 +33,7 @@
              <item>
               <widget class="QTabWidget" name="Table">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="documentMode">
                 <bool>false</bool>
@@ -117,6 +117,9 @@
                  </item>
                  <item>
                   <widget class="QTableWidget" name="tableGame">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                      <horstretch>0</horstretch>
@@ -125,15 +128,18 @@
                    </property>
                    <property name="sizeIncrement">
                     <size>
-                     <width>0</width>
-                     <height>0</height>
+                     <width>9</width>
+                     <height>9</height>
                     </size>
                    </property>
                    <property name="baseSize">
                     <size>
-                     <width>0</width>
-                     <height>0</height>
+                     <width>800</width>
+                     <height>800</height>
                     </size>
+                   </property>
+                   <property name="sizeAdjustPolicy">
+                    <enum>QAbstractScrollArea::AdjustIgnored</enum>
                    </property>
                    <property name="editTriggers">
                     <set>QAbstractItemView::NoEditTriggers</set>
@@ -244,7 +250,7 @@
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
-                       <verstretch>4</verstretch>
+                       <verstretch>5</verstretch>
                       </sizepolicy>
                      </property>
                      <property name="sizeIncrement">
@@ -261,6 +267,9 @@
                      </property>
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
+                     </property>
+                     <property name="selectionBehavior">
+                      <enum>QAbstractItemView::SelectRows</enum>
                      </property>
                     </widget>
                    </item>
@@ -478,7 +487,7 @@
      <x>0</x>
      <y>0</y>
      <width>682</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
