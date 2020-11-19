@@ -864,4 +864,25 @@ class SQLExecutor:
         finally:
             connection.close()
 
-test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
+    def search_store_by_id(self, store_id: str):
+        """
+        Search a store record by id
+        :param store_id: the store id
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM Store WHERE store_id = %s"
+                cursor.execute(sql, store_id)
+                result = cursor.fetchall()
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except:
+            print("Unknown error caught by SQL queries - search_store_by_id()")
+        finally:
+            connection.close()
+            return result if result else "No Result Found"
+
+# test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")

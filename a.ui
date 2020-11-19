@@ -33,7 +33,7 @@
              <item>
               <widget class="QTabWidget" name="Table">
                <property name="currentIndex">
-                <number>3</number>
+                <number>0</number>
                </property>
                <property name="documentMode">
                 <bool>false</bool>
@@ -81,6 +81,13 @@
                     </widget>
                    </item>
                    <item>
+                    <widget class="QCheckBox" name="checkBox">
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <widget class="QLineEdit" name="StartGame"/>
                    </item>
                    <item>
@@ -101,7 +108,30 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QDateEdit" name="dateEdit"/>
+                    <widget class="QCheckBox" name="checkBox_2">
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QDateEdit" name="dateEdit">
+                     <property name="autoFillBackground">
+                      <bool>false</bool>
+                     </property>
+                     <property name="currentSection">
+                      <enum>QDateTimeEdit::DaySection</enum>
+                     </property>
+                     <property name="displayFormat">
+                      <string>yyyy/MM/dd</string>
+                     </property>
+                     <property name="calendarPopup">
+                      <bool>true</bool>
+                     </property>
+                     <property name="timeSpec">
+                      <enum>Qt::LocalTime</enum>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_8">
@@ -111,7 +141,17 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QDateEdit" name="dateEdit_2"/>
+                    <widget class="QDateEdit" name="dateEdit_2">
+                     <property name="currentSection">
+                      <enum>QDateTimeEdit::DaySection</enum>
+                     </property>
+                     <property name="displayFormat">
+                      <string>yyyy/MM/dd</string>
+                     </property>
+                     <property name="calendarPopup">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
                    </item>
                   </layout>
                  </item>
@@ -138,6 +178,42 @@
                    <property name="editTriggers">
                     <set>QAbstractItemView::NoEditTriggers</set>
                    </property>
+                   <property name="sortingEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <attribute name="horizontalHeaderCascadingSectionResizes">
+                    <bool>true</bool>
+                   </attribute>
+                   <column>
+                    <property name="text">
+                     <string>Game ID</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Game Name</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Release Date</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Genre</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Platform</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Price</string>
+                    </property>
+                   </column>
                   </widget>
                  </item>
                  <item>
@@ -262,6 +338,26 @@
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
                      </property>
+                     <column>
+                      <property name="text">
+                       <string>Customer ID</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>First Name</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Last Name</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Address</string>
+                      </property>
+                     </column>
                     </widget>
                    </item>
                    <item>
@@ -388,6 +484,21 @@
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
                      </property>
+                     <column>
+                      <property name="text">
+                       <string>Developer ID</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Developer Name</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Address</string>
+                      </property>
+                     </column>
                     </widget>
                    </item>
                    <item>
@@ -470,6 +581,21 @@
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
                      </property>
+                     <column>
+                      <property name="text">
+                       <string>Store ID</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Store Name</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Store Address</string>
+                      </property>
+                     </column>
                     </widget>
                    </item>
                    <item>
@@ -513,7 +639,7 @@
      <x>0</x>
      <y>0</y>
      <width>682</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
