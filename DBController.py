@@ -348,18 +348,23 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
-    # def search_game(self, keyword:str = None,start_date,end_date,start_price,end_price):
+    # def search_game(self, keyword:str = None,start_date:str=None,end_date=None,start_price=None,end_price:str=None):
     #     try:
     #         connection = pymysql.connect(host=self.host, user=self.username, password=self.password,
     #                                      database=self.database)
     #         with connection.cursor() as cursor:
+    #             if (end_price is None) or (not end_price.isnumeric()):
+    #
+    #             if keyword.isnumeric():
+    #                 sql=
     #             sql = "select DISTINCT game_id, game_name, release_date, genre, platform, price \
     #                     from Game \
     #                     where game_id = IFNULL(%s,game_id) \
     #                     OR game_name =  IFNULL(%s,game_name)\
-    #                      release_date between %s and %s"
+    #                     OR genre = IFNULL(%s,genre) \
+    #                     OR platform = IFNULL (%s,genre)"
     #
-    #             cursor.execute(sql, (start_date, end_date))
+    #             cursor.execute(sql, (keyword))
     #             result = cursor.fetchall()
     #
     #     except pymysql.err.ProgrammingError:
