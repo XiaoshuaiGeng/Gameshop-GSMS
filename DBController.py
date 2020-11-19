@@ -750,6 +750,25 @@ class SQLExecutor:
         finally:
             connection.close()
 
+    def list_developer(self):
+        """
+        List all developers from Developer Table
+        :return:
+        """
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+                sql = "select * from Developer"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result if result else ('No Results Found',)
+
     def list_store(self):
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
