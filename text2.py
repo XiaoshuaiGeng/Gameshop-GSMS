@@ -68,6 +68,8 @@ class Ui(QtWidgets.QMainWindow):
         # Developer
         self.DeveloperTable = self.findChild(QtWidgets.QTableWidget, 'tableDeveloper')
 
+
+
         self.SearchDeveloper = self.findChild(QtWidgets.QPushButton, 'search2')  # Find the button
         self.SearchDeveloper.clicked.connect(self.searchdev)
 

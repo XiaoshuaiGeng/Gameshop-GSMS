@@ -769,6 +769,23 @@ class SQLExecutor:
             connection.close()
             return result if result else ('No Results Found',)
 
+    def search_developer_by_id(self,developer_id):
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+
+            with connection.cursor() as cursor:
+                sql = "SELECT * FROM Developer WHERE developer_id = %s"
+                cursor.execute(sql, developer_id)
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except:
+            print("error caught by id")
+        finally:
+            connection.close()
+            return result if result else "No Result Found"
+
     def list_store(self):
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
