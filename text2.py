@@ -1,7 +1,7 @@
+from PyQt5 import QtWidgets, uic, QtGui, QtCore
+from DBController import SQLExecutor
+import sqlite3
 import sys
-
-from PyQt5 import QtWidgets, uic, QtCore
-
 import DBController
 
 tabledata = DBController.SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456",
@@ -16,8 +16,8 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi('a.ui', self)
 
-        #GameTable
-        self.button = self.findChild(QtWidgets.QPushButton, 'search1') # Find the button
+        # GameTable
+        self.button = self.findChild(QtWidgets.QPushButton, 'search1')  # Find the button
         self.button.clicked.connect(self.searchGame)
 
         self.input = self.findChild(QtWidgets.QLineEdit, 'searchBox1')
@@ -27,19 +27,19 @@ class Ui(QtWidgets.QMainWindow):
 
         self.checkboxgame = self.findChild(QtWidgets.QAbstractButton, 'checkBoxGame')
 
-        self.addGameOndb = self.findChild(QtWidgets.QPushButton,'add1')
+        self.addGameOndb = self.findChild(QtWidgets.QPushButton, 'add1')
         self.addGameOndb.clicked.connect(self.AddGameWindow)
 
-        self.refreshList = self.findChild(QtWidgets.QPushButton,'RefreshBtn')
+        self.refreshList = self.findChild(QtWidgets.QPushButton, 'RefreshBtn')
         self.refreshList.clicked.connect(self.RefreshListBtn)
 
-        self.delete = self.findChild(QtWidgets.QPushButton,'delete1')
+        self.delete = self.findChild(QtWidgets.QPushButton, 'delete1')
         self.delete.clicked.connect(self.deleteByUserid)
 
         self.edit = self.findChild(QtWidgets.QPushButton, 'Edit1')
         self.edit.clicked.connect(self.EditGameWin)
 
-        #CustomerTable
+        # CustomerTable
         self.CostomerTable = self.findChild(QtWidgets.QTableWidget, 'tableGame2')
         self.CostomerTable.viewport().installEventFilter(self)
 
@@ -52,6 +52,12 @@ class Ui(QtWidgets.QMainWindow):
         self.addCos = self.findChild(QtWidgets.QPushButton, 'add2')  # Find the button
         self.addCos.clicked.connect(self.addCustomer)
 
+        self.delCus = self.findChild(QtWidgets.QPushButton, 'delete2')  # Find the button
+        self.delCus.clicked.connect(self.delCustomer)
+
+        self.editCus = self.findChild(QtWidgets.QPushButton, 'Edit2')  # Find the button
+        self.editCus.clicked.connect(self.editCustomer)
+
         self.search2 = self.findChild(QtWidgets.QLineEdit, 'searchBox2')
 
         #Set
@@ -61,9 +67,26 @@ class Ui(QtWidgets.QMainWindow):
         self.FirstTimeList()
         self.CustomerTableList()
 
-        #self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
+        # self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
 
         self.show()
+
+    def SearchDev(self):
+        self.DeveloperTable.setRowCount(0)
+        id = self.search2.text()
+        if id.isnumeric():
+            print(tabledata.list_developer_games())
+            for row_number, row_data in enumerate((tabledata.check_customer_memberships(id),)):
+                self.CostomerTable.insertRow(row_number)
+                print(row_data, row_number)
+                for column_number, data in enumerate(row_data):
+                    self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
+    def editCustomer(self):
+        self.eCustomer = editCustomer()
+
+    def delCustomer(self):
+        self.delCustomer = deleteCustomer()
 
     def addCustomer(self):
         self.adCos = adCustomer()
@@ -85,30 +108,27 @@ class Ui(QtWidgets.QMainWindow):
         #         for column_number, data in enumerate(row_data):
         #             self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
-
     def EditGameWin(self):
         self.editGame = EditGame()
         self.editGame.show()
-
 
     def deleteByUserid(self):
 
         global rowid
         print(rowid)
         print(self.pss.item(rowid, 0).text())
-        tabledata.delete_game(game_id= self.pss.item(rowid, 0).text())
+        tabledata.delete_game(game_id=self.pss.item(rowid, 0).text())
         self.FirstTimeList()
 
     def CustomerTableList(self):
         self.CostomerTable.setRowCount(0)
-        for row_number, row_data in enumerate(tabledata.list_all_customer_memberships()):
+        for row_number, row_data in enumerate(tabledata.list_customer()):
             self.CostomerTable.insertRow(row_number)
             print(row_data, row_number)
             for column_number, data in enumerate(row_data):
                 self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
-
-    def FirstTimeList(self):            #L:List Game Table
+    def FirstTimeList(self):  # L:List Game Table
         self.pss.setRowCount(0)
         for row_number, row_data in enumerate(tabledata.getTabledata()):
             self.pss.insertRow(row_number)
@@ -116,9 +136,9 @@ class Ui(QtWidgets.QMainWindow):
             for column_number, data in enumerate(row_data):
                 self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
-    def ListAll(self, id:str):
+    def ListAll(self, id: str):
 
-        #var_name = self.dateEdit.date()
+        # var_name = self.dateEdit.date()
         # if self.checkboxgame.isChecked():
         #     for row_number, row_data in enumerate((tabledata.list_game_by_date())):
         #         self.pss.insertRow(row_number)
@@ -142,18 +162,15 @@ class Ui(QtWidgets.QMainWindow):
     def RefreshListBtn(self):
         self.FirstTimeList()
 
-
     def AddGameWindow(self):
         self.addGame = AddGameWin()
         self.addGame.show()
-        #print(self.addGame.gameName.input.text())
-
+        # print(self.addGame.gameName.input.text())
 
     def searchGame(self):
         print(self.pss.item(1, 1).text())
         self.pss.setRowCount(0)
         self.ListAll(self.input.text())
-
 
     def eventFilter(self, source, event):
         if self.pss.selectedIndexes() is not []:
@@ -163,12 +180,10 @@ class Ui(QtWidgets.QMainWindow):
                     row = self.pss.currentRow()
                     col = self.pss.currentColumn()
 
-                    #print(self.pss.item(row, 0).text())
-                    #print(self.pss.item(row, 0).text())
-                    if(row != -1):
+                    # print(self.pss.item(row, 0).text())
+                    # print(self.pss.item(row, 0).text())
+                    if (row != -1):
                         self.returnGameTabRow(row)
-
-
 
         return QtCore.QObject.event(source, event)
 
@@ -176,6 +191,7 @@ class Ui(QtWidgets.QMainWindow):
         global rowid
         rowid = row
         print(row)
+
 
 class AddGameWin(QtWidgets.QWidget):
     def __init__(self):
@@ -234,6 +250,7 @@ class EditGame(QtWidgets.QWidget):
 
     def closeWin(self):
         self.close()
+
 
 class adCustomer(QtWidgets.QWidget):
     def __init__(self):
