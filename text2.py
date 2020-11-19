@@ -69,7 +69,7 @@ class Ui(QtWidgets.QMainWindow):
         self.DeveloperTable = self.findChild(QtWidgets.QTableWidget, 'tableDeveloper')
 
         self.SearchDeveloper = self.findChild(QtWidgets.QPushButton, 'search2')  # Find the button
-        self.SearchDeveloper.clicked.connect(self.SearchDev)
+        self.SearchDeveloper.clicked.connect(self.searchdev)
 
         # Set
         self.pss.setColumnCount(6)
@@ -78,6 +78,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.FirstTimeList()
         self.CustomerTableList()
+        self.list_developer_table()
 
         # self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
 
@@ -87,12 +88,19 @@ class Ui(QtWidgets.QMainWindow):
     #     print("ID: {0}".format(obj.item(obj.currentRow(), 0).text()))
     #     print("test Click ", obj.currentItem().isSelected())
 
-    def SearchDev(self):
+    def list_developer_table(self):
+        self.DeveloperTable.setRowCount(0)
+        for row_number, row_data in enumerate((tabledata.list_developer())):
+            self.DeveloperTable.insertRow(row_number)
+            print(row_data, row_number)
+            for column_number, data in enumerate(row_data):
+                self.DeveloperTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
+    def searchdev(self):
         self.DeveloperTable.setRowCount(0)
         id = self.search2.text()
         if id.isnumeric():
-            print(tabledata.list_developer_games())
-            for row_number, row_data in enumerate((tabledata.list_developer_games(id),)):
+            for row_number, row_data in enumerate((tabledata.list_developer())):
                 self.CostomerTable.insertRow(row_number)
                 print(row_data, row_number)
                 for column_number, data in enumerate(row_data):
