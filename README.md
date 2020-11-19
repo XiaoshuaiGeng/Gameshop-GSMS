@@ -35,7 +35,8 @@ GSMS is built by PyQt5/QT Designer/Python/MariaDB
    * add_developer(developer_name,address)
    * update_developer(developer_id,developer_name,address)
    * delete_developer(developer_id)
-   
+   * search_developer_by_id(developer_id) -> tuple
+   * list_developer() -> tuple
 
 ##### Methods for `Customer` Table
    * list_customer_history(customer_id,start,end) -> tuple
