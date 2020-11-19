@@ -33,7 +33,7 @@
              <item>
               <widget class="QTabWidget" name="Table">
                <property name="currentIndex">
-                <number>1</number>
+                <number>2</number>
                </property>
                <property name="documentMode">
                 <bool>false</bool>
@@ -286,53 +286,6 @@
                  </item>
                 </layout>
                </widget>
-               <widget class="QWidget" name="tab_5">
-                <attribute name="title">
-                 <string>Store</string>
-                </attribute>
-                <layout class="QHBoxLayout" name="horizontalLayout_15">
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label">
-                   <property name="text">
-                    <string>~</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_2"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_3">
-                   <property name="text">
-                    <string>Price</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_3"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_2">
-                   <property name="text">
-                    <string>~</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_4"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_4">
-                   <property name="text">
-                    <string>Data</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
                <widget class="QWidget" name="tab_6">
                 <attribute name="title">
                  <string>Developer</string>
@@ -413,7 +366,7 @@
                     </layout>
                    </item>
                    <item>
-                    <widget class="QTableWidget" name="tableGame_4">
+                    <widget class="QTableWidget" name="tableDeveloper">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
@@ -456,6 +409,53 @@
                     </layout>
                    </item>
                   </layout>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="tab_5">
+                <attribute name="title">
+                 <string>Store</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_15">
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>~</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>Price</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>~</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Data</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>
