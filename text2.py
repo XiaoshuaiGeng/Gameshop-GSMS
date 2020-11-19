@@ -1,5 +1,6 @@
 import sys
-from PyQt5 import QtWidgets, uic, QtGUI, QtCore
+import PyQt5
+from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtWidgets import QAbstractItemView
 import DBController
 from DBController import SQLExecutor
