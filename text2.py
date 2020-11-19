@@ -1,9 +1,9 @@
 import sys
-
-from PyQt5 import QtWidgets, uic
+import PyQt5
+from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtWidgets import QAbstractItemView
-
 import DBController
+from DBController import SQLExecutor
 
 tabledata = DBController.SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456",
                                      database="gamestop")
@@ -17,8 +17,8 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi('a.ui', self)
 
-        #GameTable
-        self.button = self.findChild(QtWidgets.QPushButton, 'search1') # Find the button
+        # GameTable
+        self.button = self.findChild(QtWidgets.QPushButton, 'search1')  # Find the button
         self.button.clicked.connect(self.searchGame)
 
         self.input = self.findChild(QtWidgets.QLineEdit, 'searchBox1')
@@ -32,10 +32,10 @@ class Ui(QtWidgets.QMainWindow):
 
         self.checkboxgame = self.findChild(QtWidgets.QAbstractButton, 'checkBoxGame')
 
-        self.addGameOndb = self.findChild(QtWidgets.QPushButton,'add1')
+        self.addGameOndb = self.findChild(QtWidgets.QPushButton, 'add1')
         self.addGameOndb.clicked.connect(self.AddGameWindow)
 
-        self.refreshList = self.findChild(QtWidgets.QPushButton,'RefreshBtn')
+        self.refreshList = self.findChild(QtWidgets.QPushButton, 'RefreshBtn')
         self.refreshList.clicked.connect(self.RefreshListBtn)
 
         self.delete = self.findChild(QtWidgets.QPushButton, 'delete1')
@@ -44,7 +44,7 @@ class Ui(QtWidgets.QMainWindow):
         self.edit = self.findChild(QtWidgets.QPushButton, 'Edit1')
         self.edit.clicked.connect(self.EditGameWin)
 
-        #CustomerTable
+        # CustomerTable
         self.CostomerTable = self.findChild(QtWidgets.QTableWidget, 'tableGame2')
         self.CostomerTable.viewport().installEventFilter(self)
 
@@ -57,22 +57,52 @@ class Ui(QtWidgets.QMainWindow):
         self.addCos = self.findChild(QtWidgets.QPushButton, 'add2')  # Find the button
         self.addCos.clicked.connect(self.addCustomer)
 
+        self.delCus = self.findChild(QtWidgets.QPushButton, 'delete2')  # Find the button
+        self.delCus.clicked.connect(self.delCustomer)
+
+        self.editCus = self.findChild(QtWidgets.QPushButton, 'Edit2')  # Find the button
+        self.editCus.clicked.connect(self.editCustomer)
+
         self.search2 = self.findChild(QtWidgets.QLineEdit, 'searchBox2')
 
-        #Set
+        # Developer
+        self.DeveloperTable = self.findChild(QtWidgets.QTableWidget, 'tableDeveloper')
+        self.DeveloperTable.viewport().installEventFilter(self)
+
+        self.SearchDeveloper = self.findChild(QtWidgets.QPushButton, 'search2')  # Find the button
+        self.SearchDeveloper.clicked.connect(self.SearchDev)
+
+        # Set
         self.pss.setColumnCount(6)
         self.CostomerTable.setColumnCount(6)
+        self.DeveloperTable.setColumnCount(6)
 
         self.FirstTimeList()
         self.CustomerTableList()
 
-        #self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
+        # self.pss.setItem(1, 1, QtWidgets.QTableWidgetItem(str("123")))
 
         self.show()
 
     def test_click(self,obj:QtWidgets.QTableWidget):
         print("ID: {0}".format(obj.item(obj.currentRow(), 0).text()))
         print("test Click ", obj.currentItem().isSelected())
+    def SearchDev(self):
+        self.DeveloperTable.setRowCount(0)
+        id = self.search2.text()
+        if id.isnumeric():
+            print(tabledata.list_developer_games())
+            for row_number, row_data in enumerate((tabledata.check_customer_memberships(id),)):
+                self.CostomerTable.insertRow(row_number)
+                print(row_data, row_number)
+                for column_number, data in enumerate(row_data):
+                    self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
+    def editCustomer(self):
+        self.eCustomer = editCustomer()
+
+    def delCustomer(self):
+        self.delCustomer = deleteCustomer()
 
     def addCustomer(self):
         self.adCos = adCustomer()
@@ -93,7 +123,6 @@ class Ui(QtWidgets.QMainWindow):
         #         print(row_data, row_number)
         #         for column_number, data in enumerate(row_data):
         #             self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
-
 
     def EditGameWin(self):
         self.editGame = EditGame()
@@ -116,11 +145,12 @@ class Ui(QtWidgets.QMainWindow):
 
     def CustomerTableList(self):
         self.CostomerTable.setRowCount(0)
-        for row_number, row_data in enumerate(tabledata.list_all_customer_memberships()):
+        for row_number, row_data in enumerate(tabledata.list_customer()):
             self.CostomerTable.insertRow(row_number)
             print(row_data, row_number)
             for column_number, data in enumerate(row_data):
                 self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
 
     # :List Game Table
     def FirstTimeList(self):
@@ -132,9 +162,9 @@ class Ui(QtWidgets.QMainWindow):
             for column_number, data in enumerate(row_data):
                 self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
-    def ListAll(self, id:str):
+    def ListAll(self, id: str):
 
-        #var_name = self.dateEdit.date()
+        # var_name = self.dateEdit.date()
         # if self.checkboxgame.isChecked():
         #     for row_number, row_data in enumerate((tabledata.list_game_by_date())):
         #         self.pss.insertRow(row_number)
@@ -158,12 +188,10 @@ class Ui(QtWidgets.QMainWindow):
     def RefreshListBtn(self):
         self.FirstTimeList()
 
-
     def AddGameWindow(self):
         self.addGame = AddGameWin(self)
         self.addGame.show()
-        #print(self.addGame.gameName.input.text())
-
+        # print(self.addGame.gameName.input.text())
 
     def searchGame(self):
         print(self.pss.item(1, 1).text())
@@ -174,6 +202,7 @@ class Ui(QtWidgets.QMainWindow):
         global rowid
         rowid = row
         print(row)
+
 
 class AddGameWin(QtWidgets.QWidget):
     def __init__(self, parent_window: QtWidgets.QWidget):
@@ -197,8 +226,8 @@ class AddGameWin(QtWidgets.QWidget):
         self.aval = self.findChild(QtWidgets.QLineEdit, 'aval')
 
     def addtoDB(self):
-        # print(self.gameName.text(), self.rDate.text(),self.genre.text(),self.platForm.text(),self.price.text(), self.aval.text())
-        tabledata.add_game(game_name=self.gameName.text(), release_date=self.rDate.text(),genre=self.genre.text(),platform=self.platForm.text(),price=self.price.text(), availability=self.aval.text())
+        tabledata.add_game(game_name=self.gameName.text(), release_date=self.rDate.text(), genre=self.genre.text(),
+                           platform=self.platForm.text(), price=self.price.text(), availability=self.aval.text())
         self.close()
         self.parent_window.FirstTimeList()
 
@@ -220,7 +249,7 @@ class EditGame(QtWidgets.QWidget):
         self.dele = self.findChild(QtWidgets.QPushButton, 'cancel')
         self.dele.clicked.connect(self.closeWin)
 
-        self.gameId = self.findChild(QtWidgets.QLineEdit,'gameId')
+        self.gameId = self.findChild(QtWidgets.QLineEdit, 'gameId')
         self.gameName = self.findChild(QtWidgets.QLineEdit, 'gameName')
         self.rDate = self.findChild(QtWidgets.QAbstractSpinBox, 'releaseDate')
         self.genre = self.findChild(QtWidgets.QLineEdit, 'genre')
@@ -229,7 +258,9 @@ class EditGame(QtWidgets.QWidget):
         self.aval = self.findChild(QtWidgets.QLineEdit, 'aval')
 
     def updateToDB(self):
-        tabledata.update_game(game_id=self.gameId.text(), game_name=self.gameName.text(), release_date=self.rDate.text(),genre=self.genre.text(),platform=self.platForm.text(),price=self.price.text(), availability=self.aval.text())
+        tabledata.update_game(game_id=self.gameId.text(), game_name=self.gameName.text(),
+                              release_date=self.rDate.text(), genre=self.genre.text(), platform=self.platForm.text(),
+                              price=self.price.text(), availability=self.aval.text())
         self.close()
 
     def closeWin(self):
@@ -243,7 +274,7 @@ class adCustomer(QtWidgets.QWidget):
 
         self.show()
 
-        self.address = self.findChild(QtWidgets.QLineEdit,'Address')
+        self.address = self.findChild(QtWidgets.QLineEdit, 'Address')
         self.firstName = self.findChild(QtWidgets.QLineEdit, 'cFirstName')
         self.lastName = self.findChild(QtWidgets.QLineEdit, 'cLastName')
 
@@ -251,14 +282,56 @@ class adCustomer(QtWidgets.QWidget):
         self.add.clicked.connect(self.addData)
 
         self.cancel = self.findChild(QtWidgets.QPushButton, 'cancel_3')
-        self.add.clicked.connect(self.closeWin)
+        self.cancel.clicked.connect(self.closeWin)
 
     def addData(self):
-        tabledata.add_customer(fname=self.firstName.text(), lname= self.lastName.text(), address= self.address.text())
+        tabledata.add_customer(fname=self.firstName.text(), lname=self.lastName.text(), address=self.address.text())
 
     def closeWin(self):
         self.close()
 
+
+class deleteCustomer(QtWidgets.QWidget):
+    def __init__(self):
+        super(deleteCustomer, self).__init__()
+
+        uic.loadUi('deleteCustomer.ui', self)
+
+        self.show()
+
+        self.cusId = self.findChild(QtWidgets.QLineEdit, 'del')
+
+        self.delete = self.findChild(QtWidgets.QPushButton, 'delBtn')
+        self.delete.clicked.connect(self.deleteCus)
+
+    def deleteCus(self):
+        tabledata.delete_customer(customer_id=self.cusId.text())
+        self.close()
+
+
+class editCustomer(QtWidgets.QWidget):
+    def __init__(self):
+        super(editCustomer, self).__init__()
+
+        uic.loadUi('editCustomer.ui', self)
+
+        self.show()
+
+        self.Cusid = self.findChild(QtWidgets.QLineEdit, 'id')
+        self.fName = self.findChild(QtWidgets.QLineEdit, 'fName')
+        self.lName = self.findChild(QtWidgets.QLineEdit, 'lName')
+        self.Address = self.findChild(QtWidgets.QLineEdit, 'address')
+
+        self.delete = self.findChild(QtWidgets.QPushButton, 'Edit')
+        self.delete.clicked.connect(self.editCus)
+
+    def editCus(self):
+        tabledata.update_customer(customer_id=self.Cusid.text(), fname=self.fName.text(), lname=self.lName.text(),
+                                  address=self.Address.text())
+        self.close()
+
+
+test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
 
 app = QtWidgets.QApplication(sys.argv)
 window = Ui()

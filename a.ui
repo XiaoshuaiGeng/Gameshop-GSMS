@@ -33,7 +33,7 @@
              <item>
               <widget class="QTabWidget" name="Table">
                <property name="currentIndex">
-                <number>0</number>
+                <number>2</number>
                </property>
                <property name="documentMode">
                 <bool>false</bool>
@@ -117,9 +117,6 @@
                  </item>
                  <item>
                   <widget class="QTableWidget" name="tableGame">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                      <horstretch>0</horstretch>
@@ -128,18 +125,15 @@
                    </property>
                    <property name="sizeIncrement">
                     <size>
-                     <width>9</width>
-                     <height>9</height>
+                     <width>0</width>
+                     <height>0</height>
                     </size>
                    </property>
                    <property name="baseSize">
                     <size>
-                     <width>800</width>
-                     <height>800</height>
+                     <width>0</width>
+                     <height>0</height>
                     </size>
-                   </property>
-                   <property name="sizeAdjustPolicy">
-                    <enum>QAbstractScrollArea::AdjustIgnored</enum>
                    </property>
                    <property name="editTriggers">
                     <set>QAbstractItemView::NoEditTriggers</set>
@@ -253,7 +247,7 @@
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
-                       <verstretch>5</verstretch>
+                       <verstretch>4</verstretch>
                       </sizepolicy>
                      </property>
                      <property name="sizeIncrement">
@@ -270,9 +264,6 @@
                      </property>
                      <property name="editTriggers">
                       <set>QAbstractItemView::NoEditTriggers</set>
-                     </property>
-                     <property name="selectionBehavior">
-                      <enum>QAbstractItemView::SelectRows</enum>
                      </property>
                     </widget>
                    </item>
@@ -295,53 +286,6 @@
                     </layout>
                    </item>
                   </layout>
-                 </item>
-                </layout>
-               </widget>
-               <widget class="QWidget" name="tab_5">
-                <attribute name="title">
-                 <string>Store</string>
-                </attribute>
-                <layout class="QHBoxLayout" name="horizontalLayout_15">
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label">
-                   <property name="text">
-                    <string>~</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_2"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_3">
-                   <property name="text">
-                    <string>Price</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_3"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_2">
-                   <property name="text">
-                    <string>~</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_4"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_4">
-                   <property name="text">
-                    <string>Data</string>
-                   </property>
-                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -425,7 +369,7 @@
                     </layout>
                    </item>
                    <item>
-                    <widget class="QTableWidget" name="tableGame_4">
+                    <widget class="QTableWidget" name="tableDeveloper">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                        <horstretch>0</horstretch>
@@ -471,6 +415,53 @@
                  </item>
                 </layout>
                </widget>
+               <widget class="QWidget" name="tab_5">
+                <attribute name="title">
+                 <string>Store</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_15">
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>~</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_2"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>Price</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_3"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>~</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEdit_4"/>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Data</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </widget>
              </item>
             </layout>
@@ -490,7 +481,7 @@
      <x>0</x>
      <y>0</y>
      <width>682</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
