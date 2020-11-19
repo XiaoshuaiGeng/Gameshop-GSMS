@@ -53,6 +53,7 @@ class SQLExecutor:
     def select_game_by_id(self, id: str) -> tuple:
         """
         :param id: the id of the selected name
+        :param filter: a dictionary containing the filter info applied on data ['price' & 'date']
         :return: a tuple that contains all info of the selected game
         """
 
@@ -64,7 +65,7 @@ class SQLExecutor:
                 cursor.execute(sql, id)
 
                 result = cursor.fetchall()
-
+                print(result)
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
         except:
@@ -73,22 +74,46 @@ class SQLExecutor:
             return result
             connection.close()
 
-    def select_game_by_name(self, name: str = "") -> tuple:
+    def select_game_by_name(self, name: str = "",filter:dict = None,start_price:str = None,
+                          end_price:str = None, start_date:str = None, end_date:str= None) -> tuple:
         """
         :param name: the name of the selected name
         :return: a tuple that contains all info of the selected game
         """
+        game_name = "%" + name + "%"
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
 
             with connection.cursor() as cursor:
 
                 sql = "SELECT * FROM Game WHERE game_name LIKE %s"
+                parameter = game_name
+                if None not in [filter,start_price,end_price,start_date,end_date]:
+
+                    if all(filter):
+                        sql = "SELECT * FROM Game \
+                                WHERE game_name LIKE %s \
+                                and (price between %s and %s) \
+                                and (release_date between %s and %s)"
+                        parameter = (game_name, start_price, end_price, start_date, end_date)
+                    elif filter['price']:
+                        sql = "SELECT * FROM Game \
+                                WHERE game_name LIKE %s \
+                                and (price between %s and %s)"
+                        parameter = (game_name, start_price, end_price)
+                    elif filter['date']:
+                        sql = "SELECT * FROM Game \
+                                WHERE game_name LIKE %s \
+                                and (release_date between %s and %s)"
+                        parameter = (game_name, start_date, end_date)
+                    else:
+                        sql = "SELECT * FROM Game WHERE game_name LIKE %s"
+                        parameter = (game_name,)
                 # ('%'+name+'%',) is semantically equal to "%name%"
-                game_name = "%" + name + "%"
                 # game_name = name
-                print(game_name)
-                cursor.execute(sql, game_name)
+                # print(game_name)
+                print(parameter)
+                cursor.execute(sql, parameter)
                 result = cursor.fetchall()
 
         except pymysql.err.ProgrammingError:
@@ -142,7 +167,7 @@ class SQLExecutor:
         finally:
             connection.close()
 
-            return result if result else ('No Results Found',)
+            return result
 
     def add_customer_membership(self,customer_id, membership_id):
         """
@@ -218,7 +243,7 @@ class SQLExecutor:
         finally:
             connection.close()
 
-            return result if result else ('No Results Found',)
+            return result
 
     def list_developer_games(self, developer_id: str) -> tuple:
         """
@@ -243,7 +268,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def list_all_published_games(self) -> tuple:
         """
@@ -267,7 +292,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def list_all_customer_memberships(self):
         """
@@ -291,7 +316,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def list_game_by_price(self, low: str, high: str) -> tuple:
         """
@@ -303,12 +328,10 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select game_name, price, release_date, genre,platform \
-                        from Game, Has_Games,Store \
-                        where Store.store_id = Has_Games.store_id \
-                        and Game.game_id = Has_Games.game_id \
-                        and price between %s and %s"
-                cursor.execute(sql, low, high)
+                sql = "select DISTINCT game_id, game_name, release_date, genre,platform,price \
+                        from Game \
+                        where (price between %s and %s)"
+                cursor.execute(sql, (low,high))
                 result = cursor.fetchall()
 
         except pymysql.err.ProgrammingError:
@@ -317,7 +340,8 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
+
 
     def list_game_by_date(self, start_date: str, end_date: str) -> tuple:
         """
@@ -331,11 +355,9 @@ class SQLExecutor:
             connection = pymysql.connect(host=self.host, user=self.username, password=self.password,
                                          database=self.database)
             with connection.cursor() as cursor:
-                sql = "select DISTINCT game_name, release_date, genre, platform, price \
-                        from Game,Store, Has_Games \
-                        where Store.store_id = Has_Games.store_id \
-                        and Game.game_id = Has_Games.game_id \
-                        and release_date between %s and %s"
+                sql = "select DISTINCT game_id, game_name, release_date, genre, platform, price \
+                        from Game \
+                        where release_date between %s and %s"
 
                 cursor.execute(sql, (start_date, end_date))
                 result = cursor.fetchall()
@@ -346,34 +368,29 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
-    # def search_game(self, keyword:str = None,start_date:str=None,end_date=None,start_price=None,end_price:str=None):
-    #     try:
-    #         connection = pymysql.connect(host=self.host, user=self.username, password=self.password,
-    #                                      database=self.database)
-    #         with connection.cursor() as cursor:
-    #             if (end_price is None) or (not end_price.isnumeric()):
-    #
-    #             if keyword.isnumeric():
-    #                 sql=
-    #             sql = "select DISTINCT game_id, game_name, release_date, genre, platform, price \
-    #                     from Game \
-    #                     where game_id = IFNULL(%s,game_id) \
-    #                     OR game_name =  IFNULL(%s,game_name)\
-    #                     OR genre = IFNULL(%s,genre) \
-    #                     OR platform = IFNULL (%s,genre)"
-    #
-    #             cursor.execute(sql, (keyword))
-    #             result = cursor.fetchall()
-    #
-    #     except pymysql.err.ProgrammingError:
-    #         print('A DB error caught')
-    #     except ConnectionError:
-    #         print("Unknown Connection Error")
-    #     finally:
-    #         connection.close()
-    #         return result if result else ('No Results Found',)
+    def search_game_by_price_release_date(self,start_date:str,end_date:str,start_price,end_price:str):
+        try:
+            connection = pymysql.connect(host=self.host, user=self.username, password=self.password,
+                                         database=self.database)
+            with connection.cursor() as cursor:
+
+                sql = "select DISTINCT game_id, game_name, release_date, genre, platform, price \
+                        from Game \
+                        where (release_date between %s and %s) \
+                        and (price between %s and %s)"
+
+                cursor.execute(sql, (start_date,end_date,start_price,end_price))
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result
 
     def count_published_games_by_location(self, location: str) -> tuple:
         """
@@ -399,7 +416,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def num_of_copies(self, store_id: str) -> tuple:
         """
@@ -425,7 +442,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def num_of_games(self, store_id: str) -> tuple:
         """
@@ -481,7 +498,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
 
     def getTabledata(self) -> tuple:
@@ -502,7 +519,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
 
     def add_game(self, game_name, release_date=date.today(), genre="", platform="", price="", availability=""):
@@ -680,7 +697,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else "No Results Found"
+            return result
 
 
     def add_developer(self,developer_name:str,address:str):
@@ -767,7 +784,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def search_developer_by_id(self,developer_id):
         try:
@@ -784,7 +801,7 @@ class SQLExecutor:
             print("error caught by id")
         finally:
             connection.close()
-            return result if result else "No Result Found"
+            return result
 
     def list_store(self):
         try:
@@ -799,7 +816,7 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-            return result if result else ('No Results Found',)
+            return result
 
     def add_store(self, store_name:str, address:str):
         """
@@ -883,6 +900,6 @@ class SQLExecutor:
             print("Unknown error caught by SQL queries - search_store_by_id()")
         finally:
             connection.close()
-            return result if result else "No Result Found"
+            return result
 
 # test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")

@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QAbstractItemView
 
 import DBController
+import ErrorMessage
 from DBController import SQLExecutor
 
 tabledata = DBController.SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456",
@@ -44,9 +45,15 @@ class Ui(QtWidgets.QMainWindow):
         self.edit = self.findChild(QtWidgets.QPushButton, 'Edit1')
         self.edit.clicked.connect(self.EditGameWin)
 
-        #checkboxes in Game Tab
+        # checkboxes in Game Tab
         self.GamePriceCheckBox = self.findChild(QtWidgets.QCheckBox, 'GamePriceCheckBox')
         self.GameReleaseDateCheckBox = self.findChild(QtWidgets.QCheckBox, 'GameReleaseDateCheckBox')
+
+        self.GameStartPrice = self.findChild(QtWidgets.QLineEdit, 'GameStartPrice')
+        self.GameEndPrice = self.findChild(QtWidgets.QLineEdit, 'GameEndPrice')
+
+        self.GameStartDate = self.findChild(QtWidgets.QDateEdit, 'GameStartDate')
+        self.GameEndDate = self.findChild(QtWidgets.QDateEdit, 'GameEndDate')
 
         # CustomerTable
         self.CustomerTable = self.findChild(QtWidgets.QTableWidget, 'tableGame2')
@@ -266,30 +273,83 @@ class Ui(QtWidgets.QMainWindow):
         # print(self.addGame.gameName.input.text())
 
     def searchGame(self):
-        # var_name = self.dateEdit.date()
-        # if self.checkboxgame.isChecked():
-        #     for row_number, row_data in enumerate((tabledata.list_game_by_date())):
-        #         self.pss.insertRow(row_number)
-        #         print(row_data, row_number)
-        #         for column_number, data in enumerate(row_data):
-        #             self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
+        # get input from search bar
         keyword = self.input.text()
-        # self.pss = QtWidgets.QTableWidget(self.pss)
+        # initialize values for parameters
+        sort_filter = {'price': False, 'date': False}
+        start_price = None
+        end_price = None
+        start_date = None
+        end_date = None
 
-        self.pss.setRowCount(0)
+        if self.GamePriceCheckBox.isChecked():
+            if len(self.GameStartPrice.text()) > 0 and len(self.GameEndPrice.text()) > 0:
+                sort_filter['price'] = True
+                start_price = self.GameStartPrice.text()
+                end_price = self.GameEndPrice.text()
+            else:
+                ErrorMessage.ErrorMessageBox()
 
-        if keyword.isnumeric():
-            for row_number, row_data in enumerate((tabledata.select_game_by_id(keyword))):
-                self.pss.insertRow(row_number)
-                # print(row_data, row_number)
-                for column_number, data in enumerate(row_data):
-                    self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+        if self.GameReleaseDateCheckBox.isChecked():
+            sort_filter['date'] = True
+            start_date = self.GameStartDate.text()
+            end_date = self.GameEndDate.text()
+
+        if len(keyword) > 0:
+            self.pss.setRowCount(0)
+            if keyword.isnumeric():
+
+                for row_number, row_data in enumerate((tabledata.select_game_by_id(keyword))):
+                    self.pss.insertRow(row_number)
+                    # print(row_data, row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+            else:
+                print((tabledata.select_game_by_name(keyword, filter=sort_filter,
+                                                                                     start_price=start_price,
+                                                                                     end_price=end_price,
+                                                                                     start_date=start_date,
+                                                                                     end_date=end_date)))
+                for row_number, row_data in enumerate((tabledata.select_game_by_name(keyword, filter=sort_filter,
+                                                                                     start_price=start_price,
+                                                                                     end_price=end_price,
+                                                                                     start_date=start_date,
+                                                                                     end_date=end_date))):
+                    self.pss.insertRow(row_number)
+                    # print(row_data, row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
         else:
-            for row_number, row_data in enumerate((tabledata.select_game_by_name(keyword))):
-                self.pss.insertRow(row_number)
-                # print(row_data, row_number)
-                for column_number, data in enumerate(row_data):
-                    self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+            self.pss.setRowCount(0)
+            if all(sort_filter.values()):
+                for row_number, row_data in enumerate(
+                        (tabledata.search_game_by_price_release_date(start_date=start_date,
+                                                                     end_date=end_date,
+                                                                     start_price=start_price,
+                                                                     end_price=end_price))):
+                    self.pss.insertRow(row_number)
+                    # print(row_data, row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+            elif sort_filter['price']:
+                # print(tabledata.list_game_by_price(low=start_price, high=end_price))
+                for row_number, row_data in enumerate((tabledata.list_game_by_price(low=start_price, high=end_price))):
+                    self.pss.insertRow(row_number)
+                    # print(row_data, row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+            elif sort_filter['date']:
+                print("go in")
+                print(tabledata.list_game_by_date(start_date=start_date, end_date=end_date))
+                for row_number, row_data in enumerate(
+                        (tabledata.list_game_by_date(start_date=start_date, end_date=end_date))):
+                    self.pss.insertRow(row_number)
+                    # print(row_data, row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+            else:
+                pass
 
 
 class AddGameWin(QtWidgets.QWidget):
@@ -307,7 +367,7 @@ class AddGameWin(QtWidgets.QWidget):
         self.dele.clicked.connect(self.closeWin)
 
         self.gameName = self.findChild(QtWidgets.QLineEdit, 'gameName')
-        self.rDate = self.findChild(QtWidgets.QAbstractSpinBox, 'releaseDate')
+        self.rDate = self.findChild(QtWidgets.QAbstractSpinBox, 'r`eleaseDate')
         self.genre = self.findChild(QtWidgets.QLineEdit, 'genre')
         self.platForm = self.findChild(QtWidgets.QLineEdit, 'platform')
         self.price = self.findChild(QtWidgets.QLineEdit, 'gamePrice')
