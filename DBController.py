@@ -86,32 +86,40 @@ class SQLExecutor:
 
             with connection.cursor() as cursor:
 
-                sql = "SELECT * FROM Game WHERE game_name LIKE %s"
-                parameter = game_name
-                if None not in [filter,start_price,end_price,start_date,end_date]:
 
-                    if all(filter):
-                        sql = "SELECT * FROM Game \
-                                WHERE game_name LIKE %s \
-                                and (price between %s and %s) \
-                                and (release_date between %s and %s)"
-                        parameter = (game_name, start_price, end_price, start_date, end_date)
-                    elif filter['price']:
-                        sql = "SELECT * FROM Game \
-                                WHERE game_name LIKE %s \
-                                and (price between %s and %s)"
-                        parameter = (game_name, start_price, end_price)
-                    elif filter['date']:
-                        sql = "SELECT * FROM Game \
-                                WHERE game_name LIKE %s \
-                                and (release_date between %s and %s)"
-                        parameter = (game_name, start_date, end_date)
-                    else:
-                        sql = "SELECT * FROM Game WHERE game_name LIKE %s"
-                        parameter = (game_name,)
+                parameter = game_name
+
+                # filter by price and release date
+                if all(filter.values()):
+                    sql = "SELECT * FROM Game \
+                            WHERE game_name LIKE %s \
+                            and (price between %s and %s) \
+                            and (release_date between %s and %s)"
+                    parameter = (game_name, start_price, end_price, start_date, end_date)
+
+                # filter by price
+                elif filter['price']:
+                    sql = "SELECT * FROM Game \
+                            WHERE game_name LIKE %s \
+                            and (price between %s and %s)"
+                    parameter = (game_name, start_price, end_price)
+
+                # filter by date
+                elif filter['date']:
+                    sql = "SELECT * FROM Game \
+                            WHERE game_name LIKE %s \
+                            and (release_date between %s and %s)"
+                    parameter = (game_name, start_date, end_date)
+
+                # just search game name
+                else:
+                    # default sql
+                    sql = "SELECT * FROM Game WHERE game_name LIKE %s"
+
                 # ('%'+name+'%',) is semantically equal to "%name%"
                 # game_name = name
                 # print(game_name)
+                print("DB: ")
                 print(parameter)
                 cursor.execute(sql, parameter)
                 result = cursor.fetchall()
@@ -439,7 +447,7 @@ class SQLExecutor:
                         and Store.store_id = %s \
                         GROUP BY Has_Games.store_id"
                 cursor.execute(sql, store_id)
-                result = cursor.fetchall()
+                result = cursor.fetchone()
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
@@ -471,7 +479,7 @@ class SQLExecutor:
                         and Store.store_id = %s \
                         GROUP BY Has_Games.store_id"
                 cursor.execute(sql, store_id)
-                result = cursor.fetchall()
+                result = cursor.fetchone()
 
         except pymysql.err.ProgrammingError:
             print('A DB error caught')
