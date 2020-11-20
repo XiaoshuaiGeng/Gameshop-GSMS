@@ -228,7 +228,13 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select Customer.customer_id, fname, lname, membership_type \
+                # sql = "select Customer.customer_id, fname, lname, membership_type \
+                #       from Customer, Customer_Membership,Membership \
+                #       where Customer.customer_id = Customer_Membership.customer_id \
+                #       and Membership.membership_id = Customer_Membership.membership_id \
+                #       and Customer.customer_id = %s"
+
+                sql = "select membership_type \
                       from Customer, Customer_Membership,Membership \
                       where Customer.customer_id = Customer_Membership.customer_id \
                       and Membership.membership_id = Customer_Membership.membership_id \
@@ -242,7 +248,6 @@ class SQLExecutor:
             print("Unknown Connection Error")
         finally:
             connection.close()
-
             return result
 
     def list_developer_games(self, developer_id: str) -> tuple:
@@ -453,6 +458,12 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
+                # sql = "select Store.store_id,store_name, COUNT(Has_Games.game_id) as 'Num of Games' \
+                #         from Store, Has_Games, Game \
+                #         where Store.store_id = Has_Games.store_id \
+                #         and Game.game_id = Has_Games.game_id \
+                #         and Store.store_id = %s \
+                #         GROUP BY Has_Games.store_id"
                 sql = "select Store.store_id,store_name, COUNT(Has_Games.game_id) as 'Num of Games' \
                         from Store, Has_Games, Game \
                         where Store.store_id = Has_Games.store_id \

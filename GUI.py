@@ -77,6 +77,14 @@ class Ui(QtWidgets.QMainWindow):
 
         self.search2 = self.findChild(QtWidgets.QLineEdit, 'searchBox2')
 
+        self.CustomerIDLineEdit = self.findChild(QtWidgets.QLineEdit, 'CustomerIDLineEdit')
+        self.CustomerMembershipResult = self.findChild(QtWidgets.QLineEdit, 'CustomerMembershipResult')
+        self.checkMembershipBtn = self.findChild(QtWidgets.QPushButton,'checkMembershipBtn')
+        # self.checkMembershipBtn = QtWidgets.QPushButton(self.checkMembershipBtn)
+        self.checkMembershipBtn.clicked.connect(self.check_customer_membership)
+
+
+
         # Developer
         self.DeveloperTable = self.findChild(QtWidgets.QTableWidget, 'tableDeveloper')
         self.DeveloperTable.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -189,6 +197,12 @@ class Ui(QtWidgets.QMainWindow):
                 print(row_data, row_number)
                 for column_number, data in enumerate(row_data):
                     self.DeveloperTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+
+    # Methods in Customer Table
+    def check_customer_membership(self):
+        customer_id = self.CustomerIDLineEdit.text()
+        membership = tabledata.check_customer_memberships(customer_id)
+        self.CustomerMembershipResult.setText(membership[0] if membership else "Unknown")
 
     def editCustomer(self):
         self.eCustomer = editCustomer()
