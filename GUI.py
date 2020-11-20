@@ -94,6 +94,13 @@ class Ui(QtWidgets.QMainWindow):
         self.deleteDeveloper = self.findChild(QtWidgets.QPushButton, 'delete1_4')  # Find the button
         self.deleteDeveloper.clicked.connect(self.delete_developer)
 
+        self.selfDeveloperTable = self.findChild(QtWidgets.QTableWidget, 'DeveloperGamesTable')
+
+        self.selfDeveloperInput = self.findChild(QtWidgets.QLineEdit, 'DeveloperIDInput')
+
+        self.checkDeveloper = self.findChild(QtWidgets.QPushButton, 'CheckPublishedGamesBtn')  # Find the button
+        self.checkDeveloper.clicked.connect(self.list_selfdeveloper_table)
+
         # Store
 
         self.StoreTable = self.findChild(QtWidgets.QTableWidget, 't_3')
@@ -117,6 +124,14 @@ class Ui(QtWidgets.QMainWindow):
         self.deleteStore = self.findChild(QtWidgets.QPushButton, 'delete1_6')  # Find the button
         self.deleteStore.clicked.connect(self.delete_store_table)
 
+        self.searchStoreId = self.findChild(QtWidgets.QLineEdit, 'StoreIDInput')
+
+        self.checkStoreId = self.findChild(QtWidgets.QPushButton, 'CheckStoreStatusBtn')  # Find the button
+        self.checkStoreId.clicked.connect(self.check_store_status)
+
+        self.totalGameCopy = self.findChild(QtWidgets.QLabel, 'TotalGameCopies')
+        self.totalGames = self.findChild(QtWidgets.QLabel, 'TotalGames')
+
         # Set
         # self.StoreTable.setColumnCount(6)
         # self.pss.setColumnCount(6)
@@ -135,6 +150,24 @@ class Ui(QtWidgets.QMainWindow):
     # def test_click(self,obj:QtWidgets.QTableWidget):
     #     print("ID: {0}".format(obj.item(obj.currentRow(), 0).text()))
     #     print("test Click ", obj.currentItem().isSelected())
+
+    def check_store_status(self):
+        num_of_copies = str(tabledata.num_of_copies(store_id=self.searchStoreId.text())[2])
+        num_of_games = str(tabledata.num_of_games(store_id=self.searchStoreId.text())[2])
+        # print(num_of_copies)
+        # print(num_of_games)
+        self.totalGameCopy.setText("Number of total game copies: " + num_of_copies)
+        self.totalGames.setText("Number of total games: " + num_of_games)
+
+    def list_selfdeveloper_table(self):
+        store_id = self.selfDeveloperInput.text()
+        if store_id.isnumeric():
+            self.selfDeveloperTable.setRowCount(0)
+            for row_number, row_data in enumerate(tabledata.list_developer_games(store_id)):
+                self.selfDeveloperTable.insertRow(row_number)
+                print(row_data, row_number)
+                for column_number, data in enumerate(row_data):
+                    self.selfDeveloperTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
 
     def delete_store_table(self):
         self.deleteStoreWin = delete_store()
@@ -283,6 +316,7 @@ class Ui(QtWidgets.QMainWindow):
         start_date = None
         end_date = None
 
+        # if checkboxes are checked
         if self.GamePriceCheckBox.isChecked():
             if len(self.GameStartPrice.text()) > 0 and len(self.GameEndPrice.text()) > 0:
                 sort_filter['price'] = True
@@ -307,10 +341,10 @@ class Ui(QtWidgets.QMainWindow):
                         self.pss.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
             else:
                 print((tabledata.select_game_by_name(keyword, filter=sort_filter,
-                                                                                     start_price=start_price,
-                                                                                     end_price=end_price,
-                                                                                     start_date=start_date,
-                                                                                     end_date=end_date)))
+                                                     start_price=start_price,
+                                                     end_price=end_price,
+                                                     start_date=start_date,
+                                                     end_date=end_date)))
                 for row_number, row_data in enumerate((tabledata.select_game_by_name(keyword, filter=sort_filter,
                                                                                      start_price=start_price,
                                                                                      end_price=end_price,
