@@ -24,16 +24,28 @@
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QGroupBox" name="groupBox">
+          <property name="font">
+           <font>
+            <family>DengXian</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
           <property name="title">
            <string>Game Store</string>
           </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
           <layout class="QGridLayout" name="gridLayout">
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
            <item row="1" column="0">
             <layout class="QVBoxLayout" name="verticalLayout_12">
              <item>
               <widget class="QTabWidget" name="Table">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <property name="documentMode">
                 <bool>false</bool>
@@ -46,9 +58,9 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>70</y>
+                   <y>90</y>
                    <width>631</width>
-                   <height>221</height>
+                   <height>351</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -109,18 +121,24 @@
                   </property>
                  </column>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>300</y>
+                   <y>450</y>
                    <width>611</width>
-                   <height>25</height>
+                   <height>31</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_9">
                   <item>
                    <widget class="QPushButton" name="add1">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Add</string>
                     </property>
@@ -128,6 +146,12 @@
                   </item>
                   <item>
                    <widget class="QPushButton" name="delete1">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Delete</string>
                     </property>
@@ -135,13 +159,13 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>9</x>
                    <y>9</y>
                    <width>601</width>
-                   <height>25</height>
+                   <height>29</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -171,42 +195,122 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QLabel" name="label_5">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
-                   <x>11</x>
-                   <y>41</y>
-                   <width>23</width>
-                   <height>16</height>
+                   <x>220</x>
+                   <y>50</y>
+                   <width>401</width>
+                   <height>27</height>
                   </rect>
                  </property>
-                 <property name="text">
-                  <string>Price</string>
-                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QCheckBox" name="GameReleaseDateCheckBox">
+                    <property name="enabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::RightToLeft</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="layoutDirection">
+                     <enum>Qt::LeftToRight</enum>
+                    </property>
+                    <property name="text">
+                     <string>Start Date</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDateEdit" name="GameStartDate">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>false</bool>
+                    </property>
+                    <property name="currentSection">
+                     <enum>QDateTimeEdit::YearSection</enum>
+                    </property>
+                    <property name="displayFormat">
+                     <string>yyyy/MM/dd</string>
+                    </property>
+                    <property name="calendarPopup">
+                     <bool>true</bool>
+                    </property>
+                    <property name="timeSpec">
+                     <enum>Qt::LocalTime</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>End Date</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDateEdit" name="GameEndDate">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="currentSection">
+                     <enum>QDateTimeEdit::YearSection</enum>
+                    </property>
+                    <property name="displayFormat">
+                     <string>yyyy/MM/dd</string>
+                    </property>
+                    <property name="calendarPopup">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
-                <widget class="QCheckBox" name="GamePriceCheckBox">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
-                   <x>40</x>
-                   <y>44</y>
-                   <width>16</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-                <widget class="QWidget" name="">
-                 <property name="geometry">
-                  <rect>
-                   <x>59</x>
-                   <y>40</y>
-                   <width>141</width>
-                   <height>22</height>
+                   <x>10</x>
+                   <y>50</y>
+                   <width>191</width>
+                   <height>27</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QLabel" name="label_5">
+                    <property name="text">
+                     <string>Price</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="GamePriceCheckBox">
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
                   <item>
                    <widget class="QLineEdit" name="GameStartPrice"/>
                   </item>
@@ -229,80 +333,6 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
-                 <property name="geometry">
-                  <rect>
-                   <x>196</x>
-                   <y>40</y>
-                   <width>421</width>
-                   <height>22</height>
-                  </rect>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_4">
-                  <item>
-                   <widget class="QCheckBox" name="GameReleaseDateCheckBox">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="layoutDirection">
-                     <enum>Qt::RightToLeft</enum>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_6">
-                    <property name="layoutDirection">
-                     <enum>Qt::LeftToRight</enum>
-                    </property>
-                    <property name="text">
-                     <string>Start Date</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDateEdit" name="GameStartDate">
-                    <property name="autoFillBackground">
-                     <bool>false</bool>
-                    </property>
-                    <property name="currentSection">
-                     <enum>QDateTimeEdit::DaySection</enum>
-                    </property>
-                    <property name="displayFormat">
-                     <string>yyyy/MM/dd</string>
-                    </property>
-                    <property name="calendarPopup">
-                     <bool>true</bool>
-                    </property>
-                    <property name="timeSpec">
-                     <enum>Qt::LocalTime</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string>End Date</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDateEdit" name="GameEndDate">
-                    <property name="currentSection">
-                     <enum>QDateTimeEdit::DaySection</enum>
-                    </property>
-                    <property name="displayFormat">
-                     <string>yyyy/MM/dd</string>
-                    </property>
-                    <property name="calendarPopup">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
                </widget>
                <widget class="QWidget" name="tab_4">
                 <attribute name="title">
@@ -312,7 +342,7 @@
                  <property name="geometry">
                   <rect>
                    <x>10</x>
-                   <y>69</y>
+                   <y>230</y>
                    <width>621</width>
                    <height>241</height>
                   </rect>
@@ -338,6 +368,9 @@
                  <property name="editTriggers">
                   <set>QAbstractItemView::NoEditTriggers</set>
                  </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>150</number>
+                 </attribute>
                  <column>
                   <property name="text">
                    <string>Customer ID</string>
@@ -359,13 +392,27 @@
                   </property>
                  </column>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>190</y>
+                   <width>611</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_19">
                   <item>
                    <widget class="QLineEdit" name="searchBox2"/>
                   </item>
                   <item>
                    <widget class="QPushButton" name="search2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Search</string>
                     </property>
@@ -373,6 +420,12 @@
                   </item>
                   <item>
                    <widget class="QPushButton" name="Edit2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Edit</string>
                     </property>
@@ -380,6 +433,336 @@
                   </item>
                   <item>
                    <widget class="QPushButton" name="RefreshBtn2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>Refresh</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="layoutWidget">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>480</y>
+                   <width>601</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_21">
+                  <item>
+                   <widget class="QPushButton" name="add2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>Add</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="delete2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="autoFillBackground">
+                     <bool>false</bool>
+                    </property>
+                    <property name="text">
+                     <string>Delete</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>false</bool>
+                    </property>
+                    <property name="autoDefault">
+                     <bool>false</bool>
+                    </property>
+                    <property name="default">
+                     <bool>false</bool>
+                    </property>
+                    <property name="flat">
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="widget" native="true">
+                 <property name="geometry">
+                  <rect>
+                   <x>70</x>
+                   <y>20</y>
+                   <width>331</width>
+                   <height>161</height>
+                  </rect>
+                 </property>
+                 <widget class="QLabel" name="label">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>10</y>
+                    <width>291</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Check Customer's Membership</string>
+                  </property>
+                 </widget>
+                 <widget class="Line" name="line">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>30</y>
+                    <width>301</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="label_2">
+                  <property name="geometry">
+                   <rect>
+                    <x>50</x>
+                    <y>50</y>
+                    <width>101</width>
+                    <height>21</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>CustomerID:</string>
+                  </property>
+                 </widget>
+                 <widget class="QLineEdit" name="CustomerIDLineEdit">
+                  <property name="geometry">
+                   <rect>
+                    <x>170</x>
+                    <y>50</y>
+                    <width>91</width>
+                    <height>20</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                 </widget>
+                 <widget class="QPushButton" name="checkMembershipBtn">
+                  <property name="geometry">
+                   <rect>
+                    <x>100</x>
+                    <y>120</y>
+                    <width>111</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Check</string>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="label_3">
+                  <property name="geometry">
+                   <rect>
+                    <x>50</x>
+                    <y>80</y>
+                    <width>111</width>
+                    <height>21</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Membership:</string>
+                  </property>
+                 </widget>
+                 <widget class="QLineEdit" name="CustomerMembershipResult">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="geometry">
+                   <rect>
+                    <x>170</x>
+                    <y>80</y>
+                    <width>91</width>
+                    <height>20</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                 </widget>
+                </widget>
+               </widget>
+               <widget class="QWidget" name="tab_6">
+                <attribute name="title">
+                 <string>Developer</string>
+                </attribute>
+                <widget class="QWidget" name="widget_3" native="true">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>280</y>
+                   <width>611</width>
+                   <height>231</height>
+                  </rect>
+                 </property>
+                 <widget class="QLabel" name="label_10">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>20</y>
+                    <width>271</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Game published by this developer:</string>
+                  </property>
+                 </widget>
+                 <widget class="Line" name="line_4">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>50</y>
+                    <width>601</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                 <widget class="QTableWidget" name="DeveloperGamesTable">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>70</y>
+                    <width>601</width>
+                    <height>161</height>
+                   </rect>
+                  </property>
+                  <attribute name="horizontalHeaderDefaultSectionSize">
+                   <number>130</number>
+                  </attribute>
+                  <column>
+                   <property name="text">
+                    <string>Developer ID</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Developer Name</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Game Name</string>
+                   </property>
+                  </column>
+                  <column>
+                   <property name="text">
+                    <string>Release Date</string>
+                   </property>
+                  </column>
+                 </widget>
+                 <widget class="QWidget" name="">
+                  <property name="geometry">
+                   <rect>
+                    <x>290</x>
+                    <y>20</y>
+                    <width>311</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_5">
+                   <item>
+                    <widget class="QLabel" name="label_11">
+                     <property name="text">
+                      <string>DeveloperID:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="DeveloperIDInput"/>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="CheckPublishedGamesBtn">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>Check</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+                <widget class="QWidget" name="">
+                 <layout class="QHBoxLayout" name="horizontalLayout_22">
+                  <item>
+                   <widget class="QLineEdit" name="searchBox1_5"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="search1_5">
+                    <property name="text">
+                     <string>Search</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="Edit1_5">
+                    <property name="text">
+                     <string>Edit</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="RefreshBtn_5">
                     <property name="text">
                      <string>Refresh</string>
                     </property>
@@ -390,22 +773,34 @@
                 <widget class="QWidget" name="">
                  <property name="geometry">
                   <rect>
-                   <x>150</x>
-                   <y>380</y>
-                   <width>158</width>
-                   <height>25</height>
+                   <x>10</x>
+                   <y>240</y>
+                   <width>621</width>
+                   <height>31</height>
                   </rect>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_21">
+                 <layout class="QHBoxLayout" name="horizontalLayout_24">
                   <item>
-                   <widget class="QPushButton" name="add2">
+                   <widget class="QPushButton" name="add1_4">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Add</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="delete2">
+                   <widget class="QPushButton" name="delete1_4">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Delete</string>
                     </property>
@@ -413,290 +808,308 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QLabel" name="label_18">
+                <widget class="QTableWidget" name="tableDeveloper">
                  <property name="geometry">
                   <rect>
-                   <x>179</x>
-                   <y>42</y>
-                   <width>16</width>
-                   <height>16</height>
+                   <x>10</x>
+                   <y>50</y>
+                   <width>621</width>
+                   <height>181</height>
                   </rect>
                  </property>
-                 <property name="text">
-                  <string>~</string>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>4</verstretch>
+                  </sizepolicy>
                  </property>
+                 <property name="sizeIncrement">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="baseSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>200</number>
+                 </attribute>
+                 <column>
+                  <property name="text">
+                   <string>Developer ID</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Developer Name</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Address</string>
+                  </property>
+                 </column>
                 </widget>
-                <widget class="QLabel" name="label_17">
-                 <property name="geometry">
-                  <rect>
-                   <x>11</x>
-                   <y>42</y>
-                   <width>23</width>
-                   <height>16</height>
-                  </rect>
-                 </property>
-                 <property name="text">
-                  <string>Price</string>
-                 </property>
-                </widget>
-                <widget class="QLineEdit" name="StartGame_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>40</x>
-                   <y>42</y>
-                   <width>133</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                </widget>
-                <widget class="QLineEdit" name="EndGame_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>193</x>
-                   <y>42</y>
-                   <width>133</width>
-                   <height>20</height>
-                  </rect>
-                 </property>
-                </widget>
-               </widget>
-               <widget class="QWidget" name="tab_6">
-                <attribute name="title">
-                 <string>Developer</string>
-                </attribute>
-                <layout class="QVBoxLayout" name="verticalLayout_13">
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_11">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_22">
-                     <item>
-                      <widget class="QLineEdit" name="searchBox1_5"/>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="search1_5">
-                       <property name="text">
-                        <string>Search</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="Edit1_5">
-                       <property name="text">
-                        <string>Edit</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="RefreshBtn_5">
-                       <property name="text">
-                        <string>Refresh</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_23">
-                     <item>
-                      <widget class="QLabel" name="label_21">
-                       <property name="text">
-                        <string>Price</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="StartGame_4"/>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_22">
-                       <property name="text">
-                        <string>~</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QLineEdit" name="EndGame_4"/>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_23">
-                       <property name="text">
-                        <string>Start Date</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QDateEdit" name="dateEdit_7"/>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="label_24">
-                       <property name="text">
-                        <string>End Date</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QDateEdit" name="dateEdit_8"/>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QTableWidget" name="tableDeveloper">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>4</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="sizeIncrement">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="baseSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="editTriggers">
-                      <set>QAbstractItemView::NoEditTriggers</set>
-                     </property>
-                     <column>
-                      <property name="text">
-                       <string>Developer ID</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Developer Name</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Address</string>
-                      </property>
-                     </column>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_24">
-                     <item>
-                      <widget class="QPushButton" name="add1_4">
-                       <property name="text">
-                        <string>Add</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="delete1_4">
-                       <property name="text">
-                        <string>Delete</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
                </widget>
                <widget class="QWidget" name="tab_5">
                 <attribute name="title">
                  <string>Store</string>
                 </attribute>
-                <layout class="QVBoxLayout" name="verticalLayout_18">
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_9">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_2">
-                     <item>
-                      <widget class="QLineEdit" name="searchBox1_6"/>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="search1_6">
-                       <property name="text">
-                        <string>Search</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="Edit1_6">
-                       <property name="text">
-                        <string>Edit</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="RefreshBtn_6">
-                       <property name="text">
-                        <string>Refresh</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <widget class="QTableWidget" name="t_3">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>4</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="sizeIncrement">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="baseSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="editTriggers">
-                      <set>QAbstractItemView::NoEditTriggers</set>
-                     </property>
-                     <column>
-                      <property name="text">
-                       <string>Store ID</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Store Name</string>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>Store Address</string>
-                      </property>
-                     </column>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_8">
-                     <item>
-                      <widget class="QPushButton" name="add1_6">
-                       <property name="text">
-                        <string>Add</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="delete1_6">
-                       <property name="text">
-                        <string>Delete</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
+                <widget class="QWidget" name="widget_2" native="true">
+                 <property name="geometry">
+                  <rect>
+                   <x>20</x>
+                   <y>280</y>
+                   <width>591</width>
+                   <height>231</height>
+                  </rect>
+                 </property>
+                 <widget class="QLabel" name="label_4">
+                  <property name="geometry">
+                   <rect>
+                    <x>10</x>
+                    <y>10</y>
+                    <width>131</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>131</width>
+                    <height>31</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>DengXian</family>
+                    <pointsize>14</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Store Status</string>
+                  </property>
+                 </widget>
+                 <widget class="Line" name="line_2">
+                  <property name="geometry">
+                   <rect>
+                    <x>20</x>
+                    <y>40</y>
+                    <width>531</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                 <widget class="QLineEdit" name="StoreIDInput">
+                  <property name="geometry">
+                   <rect>
+                    <x>360</x>
+                    <y>20</y>
+                    <width>61</width>
+                    <height>21</height>
+                   </rect>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="label_9">
+                  <property name="geometry">
+                   <rect>
+                    <x>290</x>
+                    <y>20</y>
+                    <width>81</width>
+                    <height>21</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Store ID:</string>
+                  </property>
+                 </widget>
+                 <widget class="QPushButton" name="CheckStoreStatusBtn">
+                  <property name="geometry">
+                   <rect>
+                    <x>430</x>
+                    <y>12</y>
+                    <width>101</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Check</string>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="TotalGameCopies">
+                  <property name="geometry">
+                   <rect>
+                    <x>80</x>
+                    <y>80</y>
+                    <width>231</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Number of total game copies:</string>
+                  </property>
+                 </widget>
+                 <widget class="Line" name="line_3">
+                  <property name="geometry">
+                   <rect>
+                    <x>40</x>
+                    <y>120</y>
+                    <width>461</width>
+                    <height>16</height>
+                   </rect>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="TotalGames">
+                  <property name="geometry">
+                   <rect>
+                    <x>80</x>
+                    <y>150</y>
+                    <width>231</width>
+                    <height>31</height>
+                   </rect>
+                  </property>
+                  <property name="text">
+                   <string>Number of total games :</string>
+                  </property>
+                 </widget>
+                </widget>
+                <widget class="QWidget" name="">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>10</y>
+                   <width>481</width>
+                   <height>27</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <item>
+                   <widget class="QLineEdit" name="searchBox1_6"/>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="search1_6">
+                    <property name="text">
+                     <string>Search</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="Edit1_6">
+                    <property name="text">
+                     <string>Edit</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="RefreshBtn_6">
+                    <property name="text">
+                     <string>Refresh</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>240</y>
+                   <width>611</width>
+                   <height>31</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <item>
+                   <widget class="QPushButton" name="add1_6">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>Add</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="delete1_6">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>Delete</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QTableWidget" name="t_3">
+                 <property name="geometry">
+                  <rect>
+                   <x>10</x>
+                   <y>43</y>
+                   <width>611</width>
+                   <height>191</height>
+                  </rect>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>4</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="sizeIncrement">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="baseSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>200</number>
+                 </attribute>
+                 <column>
+                  <property name="text">
+                   <string>Store ID</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Store Name</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Store Address</string>
+                  </property>
+                 </column>
+                </widget>
                </widget>
               </widget>
              </item>
@@ -717,7 +1130,7 @@
      <x>0</x>
      <y>0</y>
      <width>682</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

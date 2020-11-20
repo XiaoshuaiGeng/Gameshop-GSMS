@@ -254,7 +254,7 @@ class SQLExecutor:
         try:
             connection = pymysql.connect(self.host, self.username, self.password, self.database)
             with connection.cursor() as cursor:
-                sql = "select D.developer_id, developer_name, G.game_id, game_name, release_date, genre, platform, price \
+                sql = "select D.developer_id, developer_name, game_name, release_date \
                         from Game as G, Developer as D, Published_Games as P \
                         where G.game_id = P.game_id \
                         and D.developer_id = P.developer_id \
