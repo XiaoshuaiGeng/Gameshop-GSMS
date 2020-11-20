@@ -258,6 +258,23 @@ class SQLExecutor:
             connection.close()
             return result
 
+    def search_customer_by_id(self, customer_id):
+        try:
+            connection = pymysql.connect(self.host, self.username, self.password, self.database)
+            with connection.cursor() as cursor:
+
+                sql = "select * from Customer where customer_id = %s"
+                cursor.execute(sql, customer_id)
+                result = cursor.fetchall()
+
+        except pymysql.err.ProgrammingError:
+            print('A DB error caught')
+        except ConnectionError:
+            print("Unknown Connection Error")
+        finally:
+            connection.close()
+            return result
+
     def list_developer_games(self, developer_id: str) -> tuple:
         """
         List all games that published by a specific developer

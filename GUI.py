@@ -59,7 +59,7 @@ class Ui(QtWidgets.QMainWindow):
         self.CustomerTable = self.findChild(QtWidgets.QTableWidget, 'tableGame2')
         # self.CustomerTable = QtWidgets.QTableWidget(self.CustomerTable)
         self.CustomerTable.setSelectionBehavior(QAbstractItemView.SelectRows)
-
+        self.search2 = self.findChild(QtWidgets.QLineEdit, 'searchBox2')
         self.SearchCustomer = self.findChild(QtWidgets.QPushButton, 'search2')  # Find the button
         self.SearchCustomer.clicked.connect(self.SearchCus)
 
@@ -75,7 +75,7 @@ class Ui(QtWidgets.QMainWindow):
         self.editCus = self.findChild(QtWidgets.QPushButton, 'Edit2')  # Find the button
         self.editCus.clicked.connect(self.editCustomer)
 
-        self.search2 = self.findChild(QtWidgets.QLineEdit, 'searchBox2')
+
 
         self.CustomerIDLineEdit = self.findChild(QtWidgets.QLineEdit, 'CustomerIDLineEdit')
         self.CustomerMembershipResult = self.findChild(QtWidgets.QLineEdit, 'CustomerMembershipResult')
@@ -93,6 +93,9 @@ class Ui(QtWidgets.QMainWindow):
 
         self.searchTextLine = self.findChild(QtWidgets.QLineEdit, 'searchBox1_5')
 
+        self.editDeveloper = self.findChild(QtWidgets.QPushButton, 'Edit1_5')
+        self.editDeveloper.clicked.connect(self.edit_developer)
+
         self.RefreshDeveloper = self.findChild(QtWidgets.QPushButton, 'RefreshBtn_5')  # Find the button
         self.RefreshDeveloper.clicked.connect(self.list_developer_table)
 
@@ -108,7 +111,6 @@ class Ui(QtWidgets.QMainWindow):
 
         self.checkDeveloper = self.findChild(QtWidgets.QPushButton, 'CheckPublishedGamesBtn')  # Find the button
         self.checkDeveloper.clicked.connect(self.list_selfdeveloper_table)
-
         # Store
 
         self.StoreTable = self.findChild(QtWidgets.QTableWidget, 't_3')
@@ -213,6 +215,9 @@ class Ui(QtWidgets.QMainWindow):
     def add_developer_table(self):
         self.addDeveloperWin = add_developer()
 
+    def edit_developer(self):
+        self.openEditWindow = editDeveloper()
+
     def list_developer_table(self):
         self.DeveloperTable.setRowCount(0)
         for row_number, row_data in enumerate((tabledata.list_developer())):
@@ -260,15 +265,17 @@ class Ui(QtWidgets.QMainWindow):
         self.adCos = adCustomer()
 
     def SearchCus(self):
-        self.CostomerTable.setRowCount(0)
-        id = self.search2.text()
-        if id.isnumeric():
-            print(tabledata.check_customer_memberships(id))
-            for row_number, row_data in enumerate((tabledata.check_customer_memberships(id),)):
-                self.CostomerTable.insertRow(row_number)
-                print(row_data, row_number)
+        customer_id = self.search2.text()
+
+        # print(customer_id.isnumeric())
+        if customer_id.isnumeric:
+            self.CustomerTable.setRowCount(0)
+            print(tabledata.search_customer_by_id(customer_id))
+            for row_number, row_data in enumerate((tabledata.search_customer_by_id(customer_id))):
+                self.CustomerTable.insertRow(row_number)
+                # print(row_data, row_number)
                 for column_number, data in enumerate(row_data):
-                    self.CostomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
+                    self.CustomerTable.setItem(row_number, column_number, QtWidgets.QTableWidgetItem(str(data)))
         # else:
         #     for row_number, row_data in enumerate((tabledata.select_game_by_name(id))):
         #         self.pss.insertRow(row_number)
@@ -415,7 +422,7 @@ class AddGameWin(QtWidgets.QWidget):
         self.dele.clicked.connect(self.closeWin)
 
         self.gameName = self.findChild(QtWidgets.QLineEdit, 'gameName')
-        self.rDate = self.findChild(QtWidgets.QAbstractSpinBox, 'r`eleaseDate')
+        self.rDate = self.findChild(QtWidgets.QAbstractSpinBox, 'releaseDate')
         self.genre = self.findChild(QtWidgets.QLineEdit, 'genre')
         self.platForm = self.findChild(QtWidgets.QLineEdit, 'platform')
         self.price = self.findChild(QtWidgets.QLineEdit, 'gamePrice')
@@ -425,7 +432,7 @@ class AddGameWin(QtWidgets.QWidget):
         tabledata.add_game(game_name=self.gameName.text(), release_date=self.rDate.text(), genre=self.genre.text(),
                            platform=self.platForm.text(), price=self.price.text(), availability=self.aval.text())
         self.close()
-        self.parent_window.FirstTimeList()
+        self.parent_window.load_game_list()
 
     def closeWin(self):
         self.close()
@@ -527,6 +534,25 @@ class add_developer(QtWidgets.QWidget):
         tabledata.add_developer(developer_name=self.developerName.text(), address=self.developerAdress.text())
         self.close()
 
+
+class editDeveloper(QtWidgets.QWidget):
+    def __init__(self):
+        super(editDeveloper, self).__init__()
+
+        uic.loadUi('editDeveloper.ui', self)
+
+        self.show()
+
+        self.devid = self.findChild(QtWidgets.QLineEdit, 'devId')
+        self.devName = self.findChild(QtWidgets.QLineEdit, 'devName')
+        self.devAddress = self.findChild(QtWidgets.QLineEdit, 'address')
+
+        self.edit_btn = self.findChild(QtWidgets.QPushButton, 'Update')
+        self.edit_btn.clicked.connect(self.editDev)
+
+    def editDev(self):
+        tabledata.update_developer(developer_id=self.devid.text(), developer_name=self.devName.text(), address= self.devAddress.text())
+        self.close()
 
 class delete_developer(QtWidgets.QWidget):
     def __init__(self):
