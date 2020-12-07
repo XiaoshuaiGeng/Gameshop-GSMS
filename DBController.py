@@ -938,4 +938,3 @@ class SQLExecutor:
             connection.close()
             return result
 
-# test = SQLExecutor(host="159.203.59.83", username="gamestop", password="Sn123456", database="gamestop")
